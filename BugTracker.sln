@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker", "BugTracker\BugTracker.csproj", "{2F85BA54-229F-4BD5-9CF6-3D8CA6AD106E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackerData", "TrackerData\TrackerData.csproj", "{6BE28EA7-9EA7-4B38-BA74-C2A44E09568E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F85BA54-229F-4BD5-9CF6-3D8CA6AD106E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F85BA54-229F-4BD5-9CF6-3D8CA6AD106E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F85BA54-229F-4BD5-9CF6-3D8CA6AD106E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F85BA54-229F-4BD5-9CF6-3D8CA6AD106E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE28EA7-9EA7-4B38-BA74-C2A44E09568E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE28EA7-9EA7-4B38-BA74-C2A44E09568E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE28EA7-9EA7-4B38-BA74-C2A44E09568E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE28EA7-9EA7-4B38-BA74-C2A44E09568E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C54BC145-6FDC-4B7E-B778-15D422D6DFC7}
+	EndGlobalSection
+EndGlobal
