@@ -91,8 +91,6 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\M
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.Connections.Abstractions.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.CookiePolicy.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.Cors.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.DataProtection.Abstractions.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.DataProtection.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.AspNetCore.DataProtection.Extensions.dll
@@ -171,8 +169,6 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\M
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Hosting.Abstractions.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Hosting.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Http.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Identity.Core.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Localization.Abstractions.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Localization.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\refs\Microsoft.Extensions.Logging.Configuration.dll
@@ -381,3 +377,10 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTra
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_SbAdmin.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Register.cshtml.g.cs

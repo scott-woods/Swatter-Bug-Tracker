@@ -2,3 +2,8 @@ C:\Users\Scott\source\repos\BugTracker\TrackerData\bin\Debug\netstandard2.1\Trac
 C:\Users\Scott\source\repos\BugTracker\TrackerData\bin\Debug\netstandard2.1\TrackerData.dll
 C:\Users\Scott\source\repos\BugTracker\TrackerData\obj\Debug\netstandard2.1\TrackerData.AssemblyInfoInputs.cache
 C:\Users\Scott\source\repos\BugTracker\TrackerData\obj\Debug\netstandard2.1\TrackerData.AssemblyInfo.cs
+C:\Users\Scott\source\repos\BugTracker\TrackerData\bin\Debug\netstandard2.1\TrackerData.pdb
+C:\Users\Scott\source\repos\BugTracker\TrackerData\obj\Debug\netstandard2.1\TrackerData.csprojAssemblyReference.cache
+C:\Users\Scott\source\repos\BugTracker\TrackerData\obj\Debug\netstandard2.1\TrackerData.csproj.CoreCompileInputs.cache
+C:\Users\Scott\source\repos\BugTracker\TrackerData\obj\Debug\netstandard2.1\TrackerData.dll
+C:\Users\Scott\source\repos\BugTracker\TrackerData\obj\Debug\netstandard2.1\TrackerData.pdb

@@ -8,18 +8,26 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using BugTracker.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugTracker.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
+            _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -30,19 +38,27 @@ namespace BugTracker.Controllers
             return View();
         }
 
-        [Authorize]
-        public IActionResult Secret()
-        {
-            return View();
-        }
-
         public IActionResult Login()
         {
             return View();
         }
 
-        public IActionResult Login(string username, string password)
+        [HttpPost]
+        public async Task<IActionResult> Login(string username, string password)
         {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user != null)
+            {
+                //sign in
+                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
+
+                if (signInResult.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -51,8 +67,31 @@ namespace BugTracker.Controllers
             return View();
         }
 
-        public IActionResult Register(string username string password)
+        [HttpPost]
+        public  async Task<IActionResult> Register(string username, string password)
         {
+            var user = new IdentityUser
+            {
+                UserName = username,
+                Email = "",
+            };
+
+            var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
+                if (signInResult.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index");
         }
 

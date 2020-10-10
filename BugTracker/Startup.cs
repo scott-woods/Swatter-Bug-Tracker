@@ -28,9 +28,23 @@ namespace BugTracker
         public void ConfigureServices(IServiceCollection services)
         {
             //AddIdentity registers services
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(config =>
+            {
+                config.Password.RequiredLength = 8;
+                config.Password.RequireDigit = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
+            })
                 .AddEntityFrameworkStores<TrackerContext>()
                 .AddDefaultTokenProviders();
+
+            //Creates an Identity Cookie for login/register
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "Identity.Cookie";
+                //Default path before authentication
+                config.LoginPath = "/Home/Login";
+            });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
