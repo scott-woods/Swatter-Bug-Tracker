@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using TrackerData;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugTracker
 {
@@ -26,6 +27,11 @@ namespace BugTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //AddIdentity registers services
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<TrackerContext>()
+                .AddDefaultTokenProviders();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddDbContext<TrackerContext>(options
