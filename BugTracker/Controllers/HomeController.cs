@@ -27,12 +27,12 @@ namespace BugTracker.Controllers
             _logger = logger;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
@@ -46,6 +46,7 @@ namespace BugTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
+            //check if username exists in usermanager
             var user = await _userManager.FindByNameAsync(username);
 
             if (user != null)
@@ -86,7 +87,7 @@ namespace BugTracker.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
 
         public async Task<IActionResult> Logout()

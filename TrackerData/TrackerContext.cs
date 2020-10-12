@@ -8,7 +8,11 @@ namespace TrackerData
 {
     public class TrackerContext : IdentityDbContext
     {
-        public TrackerContext(DbContextOptions options) : base(options) { }
+        public TrackerContext(DbContextOptions<TrackerContext> options)
+            : base(options) 
+        {
+            
+        }
         public DbSet<User> Users { get; set; }
     }
 }
