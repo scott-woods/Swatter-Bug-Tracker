@@ -69,7 +69,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public  async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register(string username, string password)
         {
             var user = new IdentityUser
             {

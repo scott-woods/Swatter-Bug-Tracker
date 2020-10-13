@@ -27,6 +27,10 @@ namespace BugTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<TrackerContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("TrackerConnection"));
+            });   
             //AddIdentity registers services
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
             {
@@ -47,9 +51,6 @@ namespace BugTracker
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
-            services.AddDbContext<TrackerContext>(options
-                => options.UseSqlServer(Configuration.GetConnectionString("TrackerConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
