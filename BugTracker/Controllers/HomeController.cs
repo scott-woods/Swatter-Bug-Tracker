@@ -15,12 +15,12 @@ namespace BugTracker.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public HomeController(ILogger<HomeController> logger,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -56,11 +56,12 @@ namespace BugTracker.Controllers
 
                 if (signInResult.Succeeded)
                 {
+                    _logger.LogInformation($"User {user.UserName} successfully Logged In.");
                     return RedirectToAction("Index");
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
 
         public IActionResult Register()
@@ -69,14 +70,17 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register(string username, string password, string firstname, string lastname)
         {
-            var user = new IdentityUser
+            //Create new User from HTTP form input
+            var user = new ApplicationUser
             {
                 UserName = username,
-                Email = "",
+                FirstName = firstname,
+                LastName = lastname
             };
 
+            //Add User to Database
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
@@ -84,10 +88,11 @@ namespace BugTracker.Controllers
                 var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
                 if (signInResult.Succeeded)
                 {
+                    _logger.LogInformation($"New User {user.UserName} successfully Created and Logged In.");
                     return RedirectToAction("Index");
                 }
             }
-            return RedirectToAction("Login");
+            return RedirectToAction("Register");
         }
 
         public async Task<IActionResult> Logout()
