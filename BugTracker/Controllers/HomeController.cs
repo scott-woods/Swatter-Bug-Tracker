@@ -44,7 +44,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password, bool rememberPasswordCheck)
         {
             //check if username exists in usermanager
             var user = await _userManager.FindByNameAsync(username);
@@ -52,7 +52,7 @@ namespace BugTracker.Controllers
             if (user != null)
             {
                 //sign in
-                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
+                var signInResult = await _signInManager.PasswordSignInAsync(user, password, rememberPasswordCheck, false);
 
                 if (signInResult.Succeeded)
                 {
@@ -70,14 +70,19 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string username, string password, string firstname, string lastname)
+        public async Task<IActionResult> Register(string username, string password, string confirmPassword, string firstname, string lastname, string email)
         {
+            if (password != confirmPassword)
+            {
+                return RedirectToAction("Register");
+            }
             //Create new User from HTTP form input
             var user = new ApplicationUser
             {
                 UserName = username,
                 FirstName = firstname,
-                LastName = lastname
+                LastName = lastname,
+                Email = email
             };
 
             //Add User to Database
@@ -92,11 +97,13 @@ namespace BugTracker.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            //If something went wrong, reload Register page.
             return RedirectToAction("Register");
         }
 
         public async Task<IActionResult> Logout()
         {
+            _logger.LogInformation($"User {User.Identity.Name} has logged out.");
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index");
         }
