@@ -373,10 +373,6 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\ru\Mic
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.csproj.CoreCompileInputs.cache
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_SbAdmin.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -384,3 +380,9 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Micros
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Register.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\FluentMigrator.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\FluentMigrator.Abstractions.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\de-DE\FluentMigrator.Abstractions.resources.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.csproj.CoreCompileInputs.cache
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cache

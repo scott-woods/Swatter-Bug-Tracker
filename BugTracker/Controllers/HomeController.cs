@@ -27,12 +27,12 @@ namespace BugTracker.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize]
         public IActionResult Privacy()
         {
             return View();
@@ -59,6 +59,20 @@ namespace BugTracker.Controllers
                     _logger.LogInformation($"User {user.UserName} successfully Logged In.");
                     return RedirectToAction("Index");
                 }
+            }
+
+            return RedirectToAction("Login");
+        }
+
+        public async Task<IActionResult> DemoLogin()
+        {
+            var user = await _userManager.FindByNameAsync("Demo");
+            var signInResult = await _signInManager.PasswordSignInAsync(user, "DemoPassword", false, false);
+
+            if (signInResult.Succeeded)
+            {
+                _logger.LogInformation("User has logged in as a Demo User.");
+                return RedirectToAction("Index");
             }
 
             return RedirectToAction("Login");

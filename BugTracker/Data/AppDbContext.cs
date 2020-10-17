@@ -16,5 +16,23 @@ namespace BugTracker.Data
         {
 
         }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ProjectUsers>()
+                .HasKey(bc => new { bc.UserId, bc.ProjectId });
+            modelBuilder.Entity<ProjectUsers>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.ProjectUsers)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<ProjectUsers>()
+                .HasOne(bc => bc.Project)
+                .WithMany(c => c.ProjectUsers)
+                .HasForeignKey(bc => bc.ProjectId);
+        }
     }
 }
