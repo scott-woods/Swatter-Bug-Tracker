@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,5 +17,24 @@ namespace BugTracker.Models
 
         public string Description { get; set; }
 
+        public ApplicationUser AssignedUser { get; set; }
+
+        public ApplicationUser Submitter { get; set; }
+
+        public Project Project { get; set; }
+
+        public string Priority { get; set; }
+
+        public string Status { get; set; }
+
+        public string Category { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public DateTime LastUpdateDate { get; set; }
+
+        public ApplicationUser LastUpdatedBy { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

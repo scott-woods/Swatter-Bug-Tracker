@@ -23,6 +23,18 @@ namespace BugTracker.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //Adds default date value
+            modelBuilder.Entity<Ticket>()
+                .Property(t => t.CreateDate)
+                .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<Comment>()
+                .Property(c => c.CreateDate)
+                .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<Project>()
+                .Property(p => p.CreateDate)
+                .HasDefaultValueSql("getdate()");
+
+
             modelBuilder.Entity<ProjectUsers>()
                 .HasKey(bc => new { bc.UserId, bc.ProjectId });
             modelBuilder.Entity<ProjectUsers>()

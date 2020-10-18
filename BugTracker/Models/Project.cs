@@ -17,6 +17,14 @@ namespace BugTracker.Models
 
         public string Description { get; set; }
 
+        public ApplicationUser Creator { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public ApplicationUser LastUpdatedBy { get; set; }
+
+        public DateTime LastUpdateDate { get; set; }
+
         public IList<ProjectUsers> ProjectUsers { get; set; }
 
         public ICollection<Ticket> Tickets { get; set; }
