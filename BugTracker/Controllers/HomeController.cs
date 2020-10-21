@@ -17,17 +17,19 @@ namespace BugTracker.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -38,12 +40,14 @@ namespace BugTracker.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password, bool rememberPasswordCheck)
         {
             //check if username exists in usermanager
@@ -64,6 +68,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> DemoLogin()
         {
             var user = await _userManager.FindByNameAsync("Demo");
@@ -78,11 +83,13 @@ namespace BugTracker.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(string username, string password, string confirmPassword, string firstname, string lastname, string email)
         {

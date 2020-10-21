@@ -15,6 +15,7 @@ using TrackerData;
 using Microsoft.AspNetCore.Identity;
 using BugTracker.Data;
 using BugTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker
 {
@@ -33,6 +34,7 @@ namespace BugTracker
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SwatterConnection")));
+
             //AddIdentity registers services
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
@@ -41,8 +43,16 @@ namespace BugTracker
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthorization(config =>
+            {
+                config.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             //Creates an Identity Cookie for login/register
             services.ConfigureApplicationCookie(config =>
@@ -55,9 +65,47 @@ namespace BugTracker
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //Creates and Adds roles to the Role Manager
+        private async Task CreateRoles(IServiceProvider serviceProvider)
         {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] roleNames = { "Admin", "Manager", "Developer", "User" };
+            foreach (string roleName in roleNames)
+            {
+                bool roleExists = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExists)
+                {
+                    var role = new IdentityRole();
+                    role.Name = roleName;
+                    await RoleManager.CreateAsync(role);
+                }
+            }
+
+            //Add Test users for each Role
+            string[] userNames = { "TestAdmin", "TestManager", "TestDeveloper", "TestUser" };
+            foreach (string userName in userNames)
+            {
+                var user = await UserManager.FindByNameAsync(userName);
+                if (user == null)
+                {
+                    var newUser = new ApplicationUser
+                    {
+                        UserName = userName
+                    };
+                    var result = await UserManager.CreateAsync(newUser, "TestPassword");
+                    if (result.Succeeded)
+                    {
+                        await UserManager.AddToRoleAsync(newUser, userName.Substring(4));
+                    }
+                }
+            }
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        {
+            CreateRoles(serviceProvider).Wait();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
