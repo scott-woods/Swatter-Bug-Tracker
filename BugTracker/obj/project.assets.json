@@ -1753,21 +1753,6 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
-      },
-      "TrackerData/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.1",
-        "dependencies": {
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.9",
-          "Microsoft.EntityFrameworkCore": "3.1.9",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.9"
-        },
-        "compile": {
-          "bin/placeholder/TrackerData.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TrackerData.dll": {}
-        }
       }
     }
   },
@@ -6243,11 +6228,6 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
-    },
-    "TrackerData/1.0.0": {
-      "type": "project",
-      "path": "../TrackerData/TrackerData.csproj",
-      "msbuildProject": "../TrackerData/TrackerData.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6256,8 +6236,7 @@
       "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation >= 3.1.9",
       "Microsoft.EntityFrameworkCore >= 3.1.9",
       "Microsoft.EntityFrameworkCore.Design >= 3.1.9",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.9",
-      "TrackerData >= 1.0.0"
+      "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.9"
     ]
   },
   "packageFolders": {
@@ -6289,11 +6268,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {
-            "C:\\Users\\Scott\\source\\repos\\BugTracker\\TrackerData\\TrackerData.csproj": {
-              "projectPath": "C:\\Users\\Scott\\source\\repos\\BugTracker\\TrackerData\\TrackerData.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

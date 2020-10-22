@@ -11,7 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using TrackerData;
 using Microsoft.AspNetCore.Identity;
 using BugTracker.Data;
 using BugTracker.Models;

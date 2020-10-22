@@ -49,8 +49,6 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\runtim
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\TrackerData.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\TrackerData.pdb
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.csprojAssemblyReference.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.AssemblyInfoInputs.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.AssemblyInfo.cs
@@ -380,9 +378,6 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Micros
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Register.cshtml.g.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\FluentMigrator.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\FluentMigrator.Abstractions.dll
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\de-DE\FluentMigrator.Abstractions.resources.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.csproj.CoreCompileInputs.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cache
