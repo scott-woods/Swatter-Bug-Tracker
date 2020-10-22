@@ -70,7 +70,7 @@ namespace BugTracker
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] roleNames = { "Admin", "Manager", "Developer", "User" };
+            string[] roleNames = { "Admin", "Manager", "Developer", "Submitter" };
             foreach (string roleName in roleNames)
             {
                 bool roleExists = await RoleManager.RoleExistsAsync(roleName);
@@ -83,7 +83,7 @@ namespace BugTracker
             }
 
             //Add Test users for each Role
-            string[] userNames = { "TestAdmin", "TestManager", "TestDeveloper", "TestUser" };
+            string[] userNames = { "DemoAdmin", "DemoManager", "DemoDeveloper", "DemoSubmitter" };
             foreach (string userName in userNames)
             {
                 var user = await UserManager.FindByNameAsync(userName);
@@ -93,7 +93,7 @@ namespace BugTracker
                     {
                         UserName = userName
                     };
-                    var result = await UserManager.CreateAsync(newUser, "TestPassword");
+                    var result = await UserManager.CreateAsync(newUser, "DemoPassword");
                     if (result.Succeeded)
                     {
                         await UserManager.AddToRoleAsync(newUser, userName.Substring(4));

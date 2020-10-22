@@ -69,18 +69,69 @@ namespace BugTracker.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> DemoLogin()
+        public IActionResult DemoLogin()
         {
-            var user = await _userManager.FindByNameAsync("Demo");
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DemoUserLogin()
+        {
+            var user = await _userManager.FindByNameAsync("DemoSubmitter");
             var signInResult = await _signInManager.PasswordSignInAsync(user, "DemoPassword", false, false);
 
             if (signInResult.Succeeded)
             {
-                _logger.LogInformation("User has logged in as a Demo User.");
+                _logger.LogInformation("User has logged in as a Demo 'Submitter' role.");
                 return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Login");
+            return RedirectToAction("DemoLogin");
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DemoAdminLogin()
+        {
+            var user = await _userManager.FindByNameAsync("DemoAdmin");
+            var signInResult = await _signInManager.PasswordSignInAsync(user, "DemoPassword", false, false);
+
+            if (signInResult.Succeeded)
+            {
+                _logger.LogInformation("User has logged in as a Demo 'Admin' role.");
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("DemoLogin");
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DemoManagerLogin()
+        {
+            var user = await _userManager.FindByNameAsync("DemoManager");
+            var signInResult = await _signInManager.PasswordSignInAsync(user, "DemoPassword", false, false);
+
+            if (signInResult.Succeeded)
+            {
+                _logger.LogInformation("User has logged in as a Demo 'Manager' role.");
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("DemoLogin");
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> DemoDeveloperLogin()
+        {
+            var user = await _userManager.FindByNameAsync("DemoDeveloper");
+            var signInResult = await _signInManager.PasswordSignInAsync(user, "DemoPassword", false, false);
+
+            if (signInResult.Succeeded)
+            {
+                _logger.LogInformation("User has logged in as a Demo 'Developer' role.");
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("DemoLogin");
         }
 
         [AllowAnonymous]
