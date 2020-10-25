@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using BugTracker.Models;
 using Microsoft.AspNetCore.Identity;
+using BugTracker.Models.Email;
 
 namespace BugTracker.Controllers
 {
@@ -18,16 +19,19 @@ namespace BugTracker.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -60,6 +64,9 @@ namespace BugTracker.Controllers
 
                 if (signInResult.Succeeded)
                 {
+                    //Sends an email upon successful Login
+                    var emailMessage = new EmailMessage(new string[] { "scott_woods44@yahoo.com" }, "Test Email", "I hope this works!");
+                    _emailSender.SendEmail(emailMessage);
                     _logger.LogInformation($"User {user.UserName} successfully Logged In.");
                     return RedirectToAction("Index");
                 }

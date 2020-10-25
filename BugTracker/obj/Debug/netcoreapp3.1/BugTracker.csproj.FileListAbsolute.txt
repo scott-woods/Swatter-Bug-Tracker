@@ -378,7 +378,11 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Micros
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Register.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\DemoLogin.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\MailKit.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\MimeKit.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\NETCore.MailKit.dll
+C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.csproj.CoreCompileInputs.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\DemoLogin.cshtml.g.cs
