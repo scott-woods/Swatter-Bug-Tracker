@@ -65,8 +65,8 @@ namespace BugTracker.Controllers
                 if (signInResult.Succeeded)
                 {
                     //Sends an email upon successful Login
-                    var emailMessage = new EmailMessage(new string[] { "scott_woods44@yahoo.com" }, "Test Email", "I hope this works!");
-                    _emailSender.SendEmail(emailMessage);
+                    //var emailMessage = new EmailMessage(new string[] { "scott_woods44@yahoo.com" }, "Test Email", "I hope this works!");
+                    //_emailSender.SendEmail(emailMessage);
                     _logger.LogInformation($"User {user.UserName} successfully Logged In.");
                     return RedirectToAction("Index");
                 }
