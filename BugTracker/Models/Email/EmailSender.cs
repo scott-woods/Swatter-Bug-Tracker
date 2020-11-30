@@ -1,4 +1,5 @@
 ﻿using MailKit.Net.Smtp;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,11 @@ namespace BugTracker.Models.Email
     public class EmailSender : IEmailSender
     {
         private readonly EmailConfiguration _emailConfig;
+        private readonly ILogger<> _logger;
 
         public EmailSender(EmailConfiguration emailConfig)
         {
             _emailConfig = emailConfig;
-            Console.WriteLine(_emailConfig.SmtpServer);
-            Console.WriteLine(_emailConfig.Port);
         }
 
         public void SendEmail(EmailMessage message)
