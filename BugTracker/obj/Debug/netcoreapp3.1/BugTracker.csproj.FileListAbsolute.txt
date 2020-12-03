@@ -1,6 +1,5 @@
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\appsettings.json
-C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\BugTracker.exe
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\BugTracker.deps.json
 C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\BugTracker.runtimeconfig.json
@@ -386,3 +385,8 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\bin\Debug\netcoreapp3.1\Bouncy
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.csproj.CoreCompileInputs.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\BugTracker.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\scopedcss\bundle\BugTracker.styles.css
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\ForgotPassword.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\ResetEmailSentConfirmation.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\ResetPassword.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\ResetPasswordConfirmation.cshtml.g.cs

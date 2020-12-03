@@ -11,7 +11,7 @@ namespace BugTracker.Models.Email
     public class EmailSender : IEmailSender
     {
         private readonly EmailConfiguration _emailConfig;
-        private readonly ILogger<> _logger;
+        //private readonly ILogger<> _logger;
 
         public EmailSender(EmailConfiguration emailConfig)
         {

@@ -76,6 +76,72 @@ namespace BugTracker.Controllers
         }
 
         [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            //check if email exists
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callback = Url.Action("ResetPassword", "Home", new { token, email = email }, Request.Scheme);
+            var emailMessage = new EmailMessage(new string[] { email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
+            _emailSender.SendEmail(emailMessage);
+            return RedirectToAction("ResetEmailSentConfirmation");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ResetEmailSentConfirmation()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            var model = new ResetPasswordModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPasswordModel);
+            }
+            var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+            if (user == null) RedirectToAction("ResetPasswordConfirmation");
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.Password);
+            if (!resetPassResult.Succeeded)
+            {
+                foreach (var error in resetPassResult.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return View();
+            }
+            return RedirectToAction("ResetPasswordConfirmation");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
         public IActionResult DemoLogin()
         {
             return View();

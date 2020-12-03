@@ -54,6 +54,10 @@ namespace BugTracker
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            //Add timespan of 2 hours for generated tokens
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+            opt.TokenLifespan = TimeSpan.FromHours(2));
+
             services.AddAuthorization(config =>
             {
                 config.FallbackPolicy = new AuthorizationPolicyBuilder()
