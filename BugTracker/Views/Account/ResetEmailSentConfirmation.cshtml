@@ -1,16 +1,15 @@
 ﻿@{
     Layout = null;
 }
-@model BugTracker.Models.ResetPasswordModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Swatter Reset Password" />
+    <meta name="description" content="Swatter Forgot Password Confirmation" />
     <meta name="author" content="" />
-    <title>Swatter - Reset Password</title>
+    <title>Swatter - Forgot Password</title>
     <link href="~/css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -23,26 +22,13 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-5">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Password Recovery</h3></div>
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Confirmation</h3></div>
                                 <div class="card-body">
-                                    <div class="small mb-3 text-muted">Please enter a new Password.</div>
-                                    <form asp-action="ResetPassword">
-                                        <div class="form-group">
-                                            <label asp-for="Password" class="small mb-1">New Password</label>
-                                            <input asp-for="Password" class="form-control py-4" type="password" placeholder="Password" />
-                                            <!--<span validation-for="Password" class="text-danger"></span>-->
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="ConfirmPassword" class="small mb-1">Confirm New Password</label>
-                                            <input asp-for="ConfirmPassword" class="form-control py-4" type="password" placeholder="Confirm Password" />
-                                            <!--<span validation-for="ConfirmPassword" class="text-danger"></span>-->
-                                        </div>
-                                        <input type="hidden" asp-for="Email" class="form-control py-4" />
-                                        <input type="hidden" asp-for="Token" class="form-control py-4" />
-                                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            <input type="submit" value="Submit" class="btn btn-primary" />
-                                        </div>
-                                    </form>
+                                    <div class="small mb-3 text-muted">If your Email Address was associated with an account, you'll receive an Email with instructions to reset your password shortly.</div>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="small" asp-area="" asp-controller="Account" asp-action="Login">Return to Login</a>
+                                    <div class="small"><a asp-area="" asp-controller="Account" asp-action="Register">Need an account? Sign up!</a></div>
                                 </div>
                             </div>
                         </div>

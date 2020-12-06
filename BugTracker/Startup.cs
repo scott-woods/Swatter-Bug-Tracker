@@ -70,7 +70,7 @@ namespace BugTracker
             {
                 config.Cookie.Name = "Identity.Cookie";
                 //Default path before authentication
-                config.LoginPath = "/Home/Login";
+                config.LoginPath = "/Account/Login";
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -116,6 +116,7 @@ namespace BugTracker
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
+            //Creates Demo users for each Role
             CreateRoles(serviceProvider).Wait();
             if (env.IsDevelopment())
             {
