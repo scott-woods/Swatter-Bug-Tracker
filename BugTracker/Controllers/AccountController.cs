@@ -32,6 +32,48 @@ namespace BugTracker.Controllers
             _emailSender = emailSender;
         }
 
+        //Register new Account
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            var model = new RegisterModel();
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterModel registerModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(registerModel);
+            }
+            //Create new User from Input
+            var user = new ApplicationUser
+            {
+                UserName = registerModel.Username,
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName,
+                Email = registerModel.Email
+            };
+
+            //Add User to Database
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
+
+            if (result.Succeeded)
+            {
+                var signInResult = await _signInManager.PasswordSignInAsync(user, registerModel.Password, false, false);
+                if (signInResult.Succeeded)
+                {
+                    _logger.LogInformation($"New User {user.UserName} successfully Created and Logged In.");
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            //If something went wrong, reload Register page.
+            return RedirectToAction("Register");
+        }
+
+        //Login or login as Demo Account
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -67,72 +109,6 @@ namespace BugTracker.Controllers
             }
 
             return RedirectToAction("Login");
-        }
-
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(string email)
-        {
-            //check if email exists
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user == null)
-            {
-                return RedirectToAction("ForgotPassword");
-            }
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callback = Url.Action("ResetPassword", "Account", new { token, email = email }, Request.Scheme);
-            var emailMessage = new EmailMessage(new string[] { email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
-            _emailSender.SendEmail(emailMessage);
-            return RedirectToAction("ResetEmailSentConfirmation");
-        }
-
-        [AllowAnonymous]
-        public IActionResult ResetEmailSentConfirmation()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult ResetPassword(string token, string email)
-        {
-            var model = new ResetPasswordModel { Token = token, Email = email };
-            return View(model);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(resetPasswordModel);
-            }
-            var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
-            if (user == null) RedirectToAction("ResetPasswordConfirmation");
-            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.Password);
-            if (!resetPassResult.Succeeded)
-            {
-                foreach (var error in resetPassResult.Errors)
-                {
-                    ModelState.TryAddModelError(error.Code, error.Description);
-                }
-                return View();
-            }
-            return RedirectToAction("ResetPasswordConfirmation");
-        }
-
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
         }
 
         [AllowAnonymous]
@@ -201,43 +177,71 @@ namespace BugTracker.Controllers
             return RedirectToAction("DemoLogin");
         }
 
+        //Password resetting
         [AllowAnonymous]
-        public IActionResult Register()
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            //check if email exists
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callback = Url.Action("ResetPassword", "Account", new { token, email = email }, Request.Scheme);
+            var emailMessage = new EmailMessage(new string[] { email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
+            _emailSender.SendEmail(emailMessage);
+            return RedirectToAction("ResetEmailSentConfirmation");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ResetEmailSentConfirmation()
         {
             return View();
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Register(string username, string password, string confirmPassword, string firstname, string lastname, string email)
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
         {
-            if (password != confirmPassword)
+            var model = new ResetPasswordModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("Register");
+                return View(resetPasswordModel);
             }
-            //Create new User from HTTP form input
-            var user = new ApplicationUser
+            var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+            if (user == null) RedirectToAction("ResetPasswordConfirmation");
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.Password);
+            if (!resetPassResult.Succeeded)
             {
-                UserName = username,
-                FirstName = firstname,
-                LastName = lastname,
-                Email = email
-            };
-
-            //Add User to Database
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
-            {
-                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
-                if (signInResult.Succeeded)
+                foreach (var error in resetPassResult.Errors)
                 {
-                    _logger.LogInformation($"New User {user.UserName} successfully Created and Logged In.");
-                    return RedirectToAction("Index", "Home");
+                    ModelState.TryAddModelError(error.Code, error.Description);
                 }
+                return View();
             }
-            //If something went wrong, reload Register page.
-            return RedirectToAction("Register");
+            return RedirectToAction("ResetPasswordConfirmation");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
     }
 }
