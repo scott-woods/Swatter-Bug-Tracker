@@ -39,6 +39,16 @@ namespace BugTracker.Controllers
             return View();
         }
 
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        public IActionResult Profile(ApplicationUser user)
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

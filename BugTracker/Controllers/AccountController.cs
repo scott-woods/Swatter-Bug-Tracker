@@ -73,7 +73,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Register");
         }
 
-        //Login or login as Demo Account
+        //Basic Login
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -111,6 +111,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Login");
         }
 
+        //Login as a Demo User
         [AllowAnonymous]
         public IActionResult DemoLogin()
         {

@@ -12,6 +12,8 @@ namespace BugTracker.Models
 
         public string LastName { get; set; }
 
+        //public IdentityRole Role { get; set; }
+
         public IList<ProjectUsers> ProjectUsers { get; set; }
     }
 }
