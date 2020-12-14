@@ -16,6 +16,8 @@ using BugTracker.Data;
 using BugTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using BugTracker.Models.Email;
+using System.Security.Claims;
+using BugTracker.AuthorizationRequirements;
 
 namespace BugTracker
 {
@@ -31,39 +33,76 @@ namespace BugTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Email Config
             var emailConfig = Configuration
                 .GetSection("EmailConfiguration")
                 .Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
-
             services.AddScoped<IEmailSender, EmailSender>();
 
+            //Database Config
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SwatterConnection")));
 
-            //AddIdentity registers services
+            //Identity Config
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
                 config.Password.RequiredLength = 8;
-                config.Password.RequireDigit = false;
+                config.Password.RequireDigit = true;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomUserClaimsPrincipalFactory>();
 
             //Add timespan of 2 hours for generated tokens
-            services.Configure<DataProtectionTokenProviderOptions>(opt =>
-            opt.TokenLifespan = TimeSpan.FromHours(2));
+            services.Configure<DataProtectionTokenProviderOptions>(config =>
+            config.TokenLifespan = TimeSpan.FromHours(2));
 
+            //Creates Authorization Policies
             services.AddAuthorization(config =>
             {
-                config.FallbackPolicy = new AuthorizationPolicyBuilder()
+                var authPolicyBuilder = new AuthorizationPolicyBuilder();
+                //Fallback Policy only requires users be authenticated
+                config.FallbackPolicy = authPolicyBuilder
                     .RequireAuthenticatedUser()
                     .Build();
+
+                config.AddPolicy("Developer", policyBuilder =>
+                {
+                    policyBuilder.RequireRole("Developer");
+                });
+
+                config.AddPolicy("Admin", policyBuilder =>
+                {
+                    policyBuilder.RequireRole("Admin");
+                });
+
+                config.AddPolicy("Submitter", policyBuilder =>
+                {
+                    policyBuilder.RequireRole("Submitter");
+                });
+
+                config.AddPolicy("Manager", policyBuilder =>
+                {
+                    policyBuilder.RequireRole("Manager");
+                });
+
+                //config.AddPolicy("RequireNameScott", policyBuilder =>
+                //{
+                //    policyBuilder.RequireClaim(ClaimTypes.Name);
+                //});
+
+                //config.AddPolicy("RequireSpecificName", policyBuilder =>
+                //{
+                //    policyBuilder.AddRequirements(new NameRequirement("Scott"));
+                //});
             });
+            services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
+            services.AddScoped<IAuthorizationHandler, NameRequirementHandler>();
 
             //Creates an Identity Cookie for login/register
             services.ConfigureApplicationCookie(config =>
@@ -73,6 +112,7 @@ namespace BugTracker
                 config.LoginPath = "/Account/Login";
             });
 
+            //Allows updates at compile time
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -118,6 +158,7 @@ namespace BugTracker
         {
             //Creates Demo users for each Role
             CreateRoles(serviceProvider).Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

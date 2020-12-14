@@ -73,6 +73,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Register");
         }
 
+        
         //Basic Login
         [HttpGet]
         [AllowAnonymous]
@@ -101,7 +102,7 @@ namespace BugTracker.Controllers
                 if (signInResult.Succeeded)
                 {
                     //Sends an email upon successful Login
-                    //var emailMessage = new EmailMessage(new string[] { "scott_woods44@yahoo.com" }, "Test Email", "I hope this works!");
+                    //var emailMessage = new EmailMessage(new string[] { "scott_woods44@yahoo.com" }, "Test Email", "Test Message");
                     //_emailSender.SendEmail(emailMessage);
                     _logger.LogInformation($"User {user.UserName} successfully Logged In.");
                     return RedirectToAction("Index", "Home");
@@ -111,6 +112,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Login");
         }
 
+        
         //Login as a Demo User
         [AllowAnonymous]
         public IActionResult DemoLogin()
@@ -119,7 +121,7 @@ namespace BugTracker.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> DemoUserLogin()
+        public async Task<IActionResult> DemoSubmitterLogin()
         {
             var user = await _userManager.FindByNameAsync("DemoSubmitter");
             var signInResult = await _signInManager.PasswordSignInAsync(user, "DemoPassword", false, false);
