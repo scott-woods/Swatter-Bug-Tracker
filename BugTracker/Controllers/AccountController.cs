@@ -1,4 +1,5 @@
 ﻿using BugTracker.Models;
+using BugTracker.Models.Account;
 using BugTracker.Models.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,7 @@ namespace BugTracker.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            //ModelState.AddModelError("InvalidPassword", "Invalid Password.");
             var model = new RegisterModel();
             return View(model);
         }
@@ -44,6 +46,13 @@ namespace BugTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel registerModel)
         {
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var validatorResult = await passwordValidator.ValidateAsync(_userManager, null, registerModel.Password);
+            if (!validatorResult.Succeeded)
+            {
+                ModelState.AddModelError("InvalidPassword", "The Password you entered was Invalid.");
+                return View(registerModel);
+            }
             if (!ModelState.IsValid)
             {
                 return View(registerModel);
@@ -89,6 +98,7 @@ namespace BugTracker.Controllers
         {
             if (!ModelState.IsValid)
             {
+                //ModelState.AddModelError("Invalid", "You did not enter a valid Username and Password.");
                 return View(loginModel);
             }
             //check if username exists in usermanager
@@ -108,8 +118,8 @@ namespace BugTracker.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
-            return RedirectToAction("Login");
+            ModelState.AddModelError("ValidUser", "Your Username and/or Password was incorrect.");
+            return View(loginModel);
         }
 
         
@@ -180,27 +190,33 @@ namespace BugTracker.Controllers
             return RedirectToAction("DemoLogin");
         }
 
+        
         //Password resetting
         [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
-            return View();
+            var model = new ForgotPasswordModel();
+            return View(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             //check if email exists
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
-                return RedirectToAction("ForgotPassword");
+                return RedirectToAction("ResetEmailSentConfirmation");
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callback = Url.Action("ResetPassword", "Account", new { token, email = email }, Request.Scheme);
-            var emailMessage = new EmailMessage(new string[] { email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
+            var callback = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, Request.Scheme);
+            var emailMessage = new EmailMessage(new string[] { model.Email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
             _emailSender.SendEmail(emailMessage);
             return RedirectToAction("ResetEmailSentConfirmation");
         }
@@ -223,6 +239,15 @@ namespace BugTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
         {
+            //Check if Password is valid (based on rules set by Identity Package in Startup)
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var validatorResult = await passwordValidator.ValidateAsync(_userManager, null, resetPasswordModel.Password);
+            if (!validatorResult.Succeeded)
+            {
+                ModelState.AddModelError("InvalidPassword", "The Password you entered was Invalid.");
+                return View(resetPasswordModel);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(resetPasswordModel);

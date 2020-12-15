@@ -1,7 +1,7 @@
 ﻿@{
     Layout = null;
 }
-@model BugTracker.Models.RegisterModel
+@model BugTracker.Models.Account.RegisterModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,37 +31,56 @@
                                                 <div class="form-group">
                                                     <label class="small mb-1" asp-for="FirstName">First Name</label>
                                                     <input class="form-control py-4" asp-for="FirstName" type="text" placeholder="Enter first name" />
+                                                    <span asp-validation-for="FirstName" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="small mb-1" asp-for="LastName">Last Name</label>
                                                     <input class="form-control py-4" asp-for="LastName" type="text" placeholder="Enter last name" />
+                                                    <span asp-validation-for="LastName" class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="small mb-1" asp-for="Username">Username</label>
                                             <input class="form-control py-4" asp-for="Username" type="text" placeholder="Enter Username" value="" />
+                                            <span asp-validation-for="Username" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label class="small mb-1" asp-for="Email">Email Address</label>
                                             <input class="form-control py-4" asp-for="Email" type="email" placeholder="Enter Email Address" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                         <div class="form-row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="small mb-1" asp-for="Password">Password</label>
                                                     <input class="form-control py-4" asp-for="Password" type="password" placeholder="Enter password" value="" />
+                                                    <span asp-validation-for="Password" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="small mb-1" asp-for="ConfirmPassword">Confirm Password</label>
                                                     <input class="form-control py-4" asp-for="ConfirmPassword" type="password" placeholder="Confirm password" />
+                                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>
+                                        @if (ViewData.ModelState["InvalidPassword"] != null)
+                                        {
+                                            @if (ViewData.ModelState["InvalidPassword"].Errors.Count > 0)
+                                            {
+                                                <div class="text-danger">
+                                                    <ul>
+                                                        <li style="font-size:12px">Minimum of 8 Characters</li>
+                                                        <li style="font-size:12px">Requires at least 1 Number</li>
+                                                        <li style="font-size:12px">Requires at least 1 Special Character</li>
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
                                         <div class="form-group mt-4 mb-0">
                                             <button class="btn btn-primary btn-block" type="submit">Register</button>
                                         </div>

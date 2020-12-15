@@ -50,8 +50,8 @@ namespace BugTracker
             {
                 config.Password.RequiredLength = 8;
                 config.Password.RequireDigit = true;
-                config.Password.RequireNonAlphanumeric = false;
-                config.Password.RequireUppercase = false;
+                config.Password.RequireNonAlphanumeric = true;
+                config.Password.RequireUppercase = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()

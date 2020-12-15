@@ -1,7 +1,7 @@
 ﻿@{
     Layout = null;
 }
-@model BugTracker.Models.LoginModel
+@model BugTracker.Models.Account.LoginModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,16 +29,21 @@
                                         <div class="form-group">
                                             <label asp-for="Username" class="small mb-1">Username</label>
                                             <input asp-for="Username" class="form-control py-4" type="text" placeholder="Enter Username" />
+                                            <span asp-validation-for="Username" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="Password" class="small mb-1">Password</label>
                                             <input asp-for="Password" class="form-control py-4" type="password" placeholder="Enter Password" />
+                                            <span asp-validation-for="Password" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input asp-for="RememberPassword" class="custom-control-input" type="checkbox" />
                                                 <label asp-for="RememberPassword" class="custom-control-label">Remember Password</label>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="text-danger">@Html.ValidationMessageFor(m => m.ValidUser)</span>
                                         </div>
                                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <button class="btn btn-primary btn-block" type="submit">Login</button>
