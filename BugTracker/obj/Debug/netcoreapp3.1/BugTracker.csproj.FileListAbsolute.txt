@@ -390,3 +390,8 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Account\ResetEmailSentConfirmation.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Account\ResetPassword.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Account\ResetPasswordConfirmation.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\ManageProjectUsers.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\ManageRoles.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Profile.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Projects.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\netcoreapp3.1\Razor\Views\Home\Tickets.cshtml.g.cs

@@ -49,15 +49,14 @@ namespace BugTracker.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult ManageRoles()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Privacy()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
 
         public async Task<IActionResult> Logout()
@@ -65,6 +64,12 @@ namespace BugTracker.Controllers
             _logger.LogInformation($"User {User.Identity.Name} has logged out.");
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index");
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
