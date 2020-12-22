@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Services
 {
-    interface IUserServices
+    public interface IUserServices
     {
         public IEnumerable<ApplicationUser> GetAll();
 

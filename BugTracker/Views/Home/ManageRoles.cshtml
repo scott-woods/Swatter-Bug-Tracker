@@ -1,13 +1,68 @@
 ﻿@{ 
     ViewBag.Title = "Swatter - Role Management";
 }
-@model BugTracker.Models.
+@model BugTracker.Models.CommonViewModel
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
-            <h1 class="mt-4">Manage User Roles</h1>
-            <div class="card mb-4">
-                <div class="card-header">Users</div>
+        <div class="col-4">
+            <div style="margin-top:20%; margin-bottom:20%">
+                <div class="mb-4">Please select 1 or more Users:</div>
+                <form asp-controller="Home" asp-action="ManageRoles">
+                    <span asp-validation-for="RoleModel.UserIds" class="text-danger"></span>
+                    <span class="text-success mb-4" style="display:inline-block;">@ViewBag.ChangeConfirmation</span>
+                    <select multiple asp-for="RoleModel.UserIds" asp-items="@(new SelectList(Model.UserModel.Users, "Id", "FullName"))" style="width:75%" size="5">
+                    </select>
+                    <hr />
+                    <div class="mt-2">Please select 1 or more Roles to Assign:</div>
+                    <div class="row mt-2">
+                        <div class="col" style="text-align:center;">
+                            <label for="Submitter" style="display:block;">Submitter</label>
+                            <input type="checkbox" asp-for="RoleModel.SubmitterChecked" />
+                        </div>
+                        <div class="col" style="text-align:center;">
+                            <label for="Manager" style="display:block;">Manager</label>
+                            <input type="checkbox" asp-for="RoleModel.ManagerChecked" />
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col" style="text-align:center;">
+                            <label for="Developer" style="display:block;">Developer</label>
+                            <input type="checkbox" asp-for="RoleModel.DeveloperChecked" />
+                        </div>
+                        <div class="col" style="text-align:center;">
+                            <label for="Admin" style="display:block;">Admin</label>
+                            <input type="checkbox" asp-for="RoleModel.AdminChecked" />
+                        </div>
+                    </div>
+                    <!--This foreach passes the UserModel along with the POST Action-->
+                    @foreach (var user in Model.UserModel.Users)
+                    {
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Id)
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].FirstName)
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].LastName)
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].FullName)
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].UserName)
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Email)
+                        @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Roles)
+                    }
+                <div class="form-group mt-4">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary btn-block" type="submit" name="addRoles" value="AddRoles">Add Roles</button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary btn-block" type="submit" name="removeRoles" value="RemoveRoles">Remove Roles</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card mb-4 mt-4">
+                <div class="card-header">
+                    <h2>All Users</h2>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -15,16 +70,25 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Role</th>
+                                    <th>Username</th>
+                                    <th>Roles</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @foreach (var user in Model.UserModel.Users)
+                                {
+                                    <tr>
+                                        <td>@user.FullName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.UserName</td>
+                                        <td>@user.Roles</td>
+                                    </tr>
+                                }
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-
         </div>
     </div>
 </div>
