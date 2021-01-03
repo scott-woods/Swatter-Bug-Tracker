@@ -15,5 +15,14 @@ namespace BugTracker.Models
         public bool ManagerChecked { get; set; }
         public bool DeveloperChecked { get; set; }
         public bool SubmitterChecked { get; set; }
+
+        public void Reset()
+        {
+            UserIds = null;
+            AdminChecked = false;
+            ManagerChecked = false;
+            DeveloperChecked = false;
+            SubmitterChecked = false;
+        }
     }
 }

@@ -133,6 +133,7 @@ namespace BugTracker.Controllers
             }
 
             ViewBag.ChangeConfirmation = "Changes have been saved.";
+            model.RoleModel.Reset();
             return View(model);
         }
 
