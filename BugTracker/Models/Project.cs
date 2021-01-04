@@ -9,9 +9,10 @@ namespace BugTracker.Models
 {
     public class Project
     {
+        [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please provide a Title for the Project.")]
         [StringLength(30)]
         public string Title { get; set; }
 
@@ -19,7 +20,7 @@ namespace BugTracker.Models
 
         public ApplicationUser Creator { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = System.DateTime.Now;
 
         public ApplicationUser LastUpdatedBy { get; set; }
 

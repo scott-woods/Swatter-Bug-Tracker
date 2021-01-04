@@ -41,7 +41,9 @@ namespace BugTracker
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailSender, EmailSender>();
 
+            //Add Data Model Services
             services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IProjectServices, ProjectServices>();
 
             //Database Config
             services.AddDbContext<AppDbContext>(options =>

@@ -9,7 +9,7 @@ namespace BugTracker.Services
 {
     public class ProjectServices : IProjectServices
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
 
         public ProjectServices(AppDbContext context)
         {

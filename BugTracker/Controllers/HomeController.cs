@@ -24,14 +24,16 @@ namespace BugTracker.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
-        private IUserServices _userServices;
+        private readonly IUserServices _userServices;
+        private readonly IProjectServices _projectServices;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender,
-            IUserServices userServices)
+            IUserServices userServices,
+            IProjectServices projectServices)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -39,6 +41,7 @@ namespace BugTracker.Controllers
             _logger = logger;
             _emailSender = emailSender;
             _userServices = userServices;
+            _projectServices = projectServices;
         }
 
         public IActionResult Index()
@@ -54,6 +57,53 @@ namespace BugTracker.Controllers
         public IActionResult Profile(ApplicationUser user)
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Projects()
+        {
+            var allProjects = _projectServices.GetAll();
+
+            var listingResult = allProjects
+                .Select(result => new ProjectListingModel
+                {
+                    Id = result.Id.ToString(),
+                    Title = result.Title,
+                    Description = result.Description,
+                    CreateDate = result.CreateDate,
+                    CreatorId = (result.Creator == null ? "N/A" : result.Creator.Id),
+                    CreatorUsername = (result.Creator == null ? "N/A" : result.Creator.UserName),
+                    LastUpdateDate = result.LastUpdateDate,
+                    LastUpdatedById = (result.LastUpdatedBy == null ? "N/A" : result.LastUpdatedBy.Id),
+                    LastUpdatedByUsername = (result.LastUpdatedBy == null ? "N/A" : result.LastUpdatedBy.UserName)
+                }
+                    ).ToList();
+
+            var projectModel = new ProjectIndexModel
+            {
+                Projects = listingResult
+            };
+
+            return View(projectModel);
+        }
+
+        public IActionResult ProjectDetails(string projectId)
+        {
+            var project = _projectServices.GetById(Int32.Parse(projectId));
+            var listingResult = new ProjectListingModel
+            {
+                Id = project.Id.ToString(),
+                Title = project.Title,
+                Description = project.Description,
+                CreateDate = project.CreateDate,
+                CreatorId = (project.Creator == null ? "N/A" : project.Creator.Id),
+                CreatorUsername = (project.Creator == null ? "N/A" : project.Creator.UserName),
+                LastUpdateDate = project.LastUpdateDate,
+                LastUpdatedById = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.Id),
+                LastUpdatedByUsername = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.UserName)
+            };
+
+            return View(listingResult);
         }
 
         [HttpGet]
@@ -76,6 +126,7 @@ namespace BugTracker.Controllers
             
             for (int i=0; i < listingResult.Count(); i++)
             {
+                //Adds each User's respective roles to the Listing
                 var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
                 var roles = _userManager.GetRolesAsync(appUser);
                 IList<string> rolesResult = await roles;
