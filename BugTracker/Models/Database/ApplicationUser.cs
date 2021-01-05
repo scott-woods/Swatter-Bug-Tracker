@@ -14,6 +14,6 @@ namespace BugTracker.Models
 
         //public IdentityRole Role { get; set; }
 
-        public IList<ProjectUsers> ProjectUsers { get; set; }
+        public IList<ProjectUser> ProjectUsers { get; set; }
     }
 }

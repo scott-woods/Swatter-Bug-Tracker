@@ -1,4 +1,5 @@
 ﻿using BugTracker.Models.Home;
+using BugTracker.Models.PostModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,7 @@ namespace BugTracker.Models.CommonViewModels
 {
     public class UserProjectModel
     {
-        public UserProjectModel(Project projectModel, UserIndexModel userModel)
-        {
-            this.ProjectModel = projectModel;
-            this.UserModel = userModel;
-        }
-
-        public Project ProjectModel { get; set; }
+        public ProjectModel ProjectModel { get; set; }
 
         public UserIndexModel UserModel { get; set; }
     }

@@ -15,6 +15,8 @@ using BugTracker.Models.Home;
 using BugTracker.Models.CommonViewModels;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore.Internal;
+using BugTracker.Models.PostModels;
+using BugTracker.Data;
 
 namespace BugTracker.Controllers
 {
@@ -27,6 +29,7 @@ namespace BugTracker.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IUserServices _userServices;
         private readonly IProjectServices _projectServices;
+        private readonly AppDbContext _context;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
@@ -34,7 +37,8 @@ namespace BugTracker.Controllers
             RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender,
             IUserServices userServices,
-            IProjectServices projectServices)
+            IProjectServices projectServices,
+            AppDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -43,6 +47,7 @@ namespace BugTracker.Controllers
             _emailSender = emailSender;
             _userServices = userServices;
             _projectServices = projectServices;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -50,17 +55,6 @@ namespace BugTracker.Controllers
             return View();
         }
 
-        public IActionResult Profile()
-        {
-            return View();
-        }
-
-        public IActionResult Profile(ApplicationUser user)
-        {
-            return View();
-        }
-
-        [HttpGet]
         public IActionResult Projects()
         {
             var allProjects = _projectServices.GetAll();
@@ -94,20 +88,70 @@ namespace BugTracker.Controllers
         {
             var allUsers = _userServices.GetAll();
             var userModels = await FormatUsersAsync(allUsers);
+
             var userIndex = new UserIndexModel
             {
                 Users = userModels
             };
-            var project = new Project();
-            var model = new UserProjectModel(project, userIndex);
+
+            var projectModel = new ProjectModel();
+            var model = new UserProjectModel
+            {
+                UserModel = userIndex,
+                ProjectModel = projectModel
+            };
+
             return View(model);
         }
 
         [HttpPost]
         [Authorize(Policy = "Manager")]
-        public IActionResult NewProject(UserProjectModel model)
+        public async Task<IActionResult> NewProject(UserProjectModel model, string[] userIds)
         {
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //ViewData["userIds"] = userIds;
+
+            var newProject = new Project
+            {
+                Title = model.ProjectModel.Title,
+                Description = model.ProjectModel.Description,
+                CreateDate = DateTime.Now,
+                Creator = await _userManager.GetUserAsync(User),
+                LastUpdatedBy = await _userManager.GetUserAsync(User)
+            };
+
+            List<ApplicationUser> allUsers = new List<ApplicationUser>();
+
+            foreach (var id in userIds)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                allUsers.Add(user);
+            }
+
+            //foreach (var id in model.ProjectModel.UserIds)
+            //{
+            //    var user = await _userManager.FindByIdAsync(id);
+            //    allUsers.Add(user);
+            //}
+
+            for (int i = 0; i < allUsers.Count; i++)
+            {
+                var projUser = new ProjectUser
+                {
+                    ApplicationUser = allUsers[i],
+                    Project = newProject
+                };
+                newProject.ProjectUsers.Add(projUser);
+            }
+
+            _context.Projects.Add(newProject);
+            _context.SaveChanges();
+
+            return RedirectToAction("Projects");
         }
 
         [HttpGet]
@@ -148,7 +192,7 @@ namespace BugTracker.Controllers
                 }
                     ).ToList();
 
-            for (int i = 0; i < listingResult.Count(); i++)
+            for (int i = 0; i < listingResult.Count; i++)
             {
                 //Adds each User's respective roles to the Listing
                 var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
@@ -245,7 +289,7 @@ namespace BugTracker.Controllers
                 }
                     ).ToList();
 
-            for (int i = 0; i < listingResult.Count(); i++)
+            for (int i = 0; i < listingResult.Count; i++)
             {
                 //Adds each User's respective roles to the Listing
                 var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);

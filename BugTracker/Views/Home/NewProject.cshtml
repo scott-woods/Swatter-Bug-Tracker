@@ -8,25 +8,70 @@
             <h2>Create New Project</h2>
         </div>
         <div class="card-body">
-            <form asp-action="NewProject" id="newProjectForm">
+            <form method="post" asp-controller="Home" asp-action="NewProject" id="newProjectForm">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-3 mx-auto">
                         <div class="form-group">
                             <label asp-for="ProjectModel.Title">Title</label>
                             <input asp-for="ProjectModel.Title" class="form-control" type="text" placeholder="Enter a Title" />
+                            <span asp-validation-for="ProjectModel.Title" class="text-danger" style="display:inline-block;"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="ProjectModel.Description">Description (0-100 Characters)</label>
                             <textarea asp-for="ProjectModel.Description" class="form-control" maxlength="100" form="newProjectForm"></textarea>
                         </div>
+                        <div class="form-group mt-4" style="text-align:center">
+                            <button class="btn btn-primary" type="submit">Create Project</button>
+                        </div>
                     </div>
-                    <div class="col-5">
-                        <select multiple asp-for="ProjectModel.ProjectUsers" asp-items="@(new SelectList(Model.UserModel.Users, "Id", "FullName"))" style="width:75%" size="5">
-                        </select>
+                    <div class="col-7 mx-auto">
+                        @*<select multiple asp-for="ProjectModel.UserIds" asp-items="@(new SelectList(Model.UserModel.Users, "Id", "FullName"))" style="width:75%" size="5">
+        </select>
+        <span asp-validation-for="ProjectModel.UserIds" class="text-danger" style="display:inline-block;"></span>*@
+                                <div class="card table-responsive" style="height:400px;">
+                                    <div class="card-header">
+                                        <h4>Available Users</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordererless" style="width:auto;table-layout:fixed" id="dataTable" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Username</th>
+                                                    <th>Roles</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var user in Model.UserModel.Users)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" value="@user.Id" name="userIds" />
+                                                        </td>
+                                                        <td>@user.FullName</td>
+                                                        <td>@user.Email</td>
+                                                        <td>@user.UserName</td>
+                                                        <td>@user.Roles</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                     </div>
                 </div>
-                <input type="hidden" asp-for="ProjectModel.Creator" value="@User" />
-                <input type="hidden" asp-for="ProjectModel.CreateDate" value="@System.DateTime.Now" />
+                @foreach (var user in Model.UserModel.Users)
+                {
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Id)
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].FirstName)
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].LastName)
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].FullName)
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].UserName)
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Email)
+                    @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Roles)
+                }
             </form>
         </div>
     </div>

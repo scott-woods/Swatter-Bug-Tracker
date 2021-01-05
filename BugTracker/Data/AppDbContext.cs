@@ -18,6 +18,8 @@ namespace BugTracker.Data
         }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<ProjectUser> ProjectUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,13 +37,13 @@ namespace BugTracker.Data
                 .HasDefaultValueSql("getdate()");
 
 
-            modelBuilder.Entity<ProjectUsers>()
+            modelBuilder.Entity<ProjectUser>()
                 .HasKey(bc => new { bc.UserId, bc.ProjectId });
-            modelBuilder.Entity<ProjectUsers>()
-                .HasOne(bc => bc.User)
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(bc => bc.ApplicationUser)
                 .WithMany(b => b.ProjectUsers)
                 .HasForeignKey(bc => bc.UserId);
-            modelBuilder.Entity<ProjectUsers>()
+            modelBuilder.Entity<ProjectUser>()
                 .HasOne(bc => bc.Project)
                 .WithMany(c => c.ProjectUsers)
                 .HasForeignKey(bc => bc.ProjectId);

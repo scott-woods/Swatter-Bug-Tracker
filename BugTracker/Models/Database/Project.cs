@@ -24,9 +24,9 @@ namespace BugTracker.Models
 
         public ApplicationUser LastUpdatedBy { get; set; }
 
-        public DateTime LastUpdateDate { get; set; }
+        public DateTime LastUpdateDate { get; set; } = System.DateTime.Now;
 
-        public IList<ProjectUsers> ProjectUsers { get; set; }
+        public IList<ProjectUser> ProjectUsers { get; set; } = new List<ProjectUser>();
 
         public ICollection<Ticket> Tickets { get; set; }
     }
