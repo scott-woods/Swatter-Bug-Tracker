@@ -78,7 +78,7 @@ namespace BugTracker
 
                 config.AddPolicy("Developer", policyBuilder =>
                 {
-                    policyBuilder.RequireRole("Developer");
+                    policyBuilder.RequireRole("Developer", "Admin");
                 });
 
                 config.AddPolicy("Admin", policyBuilder =>
@@ -88,12 +88,12 @@ namespace BugTracker
 
                 config.AddPolicy("Submitter", policyBuilder =>
                 {
-                    policyBuilder.RequireRole("Submitter");
+                    policyBuilder.RequireRole("Submitter", "Admin");
                 });
 
                 config.AddPolicy("Manager", policyBuilder =>
                 {
-                    policyBuilder.RequireRole("Manager");
+                    policyBuilder.RequireRole("Manager", "Admin");
                 });
 
                 //config.AddPolicy("RequireNameScott", policyBuilder =>

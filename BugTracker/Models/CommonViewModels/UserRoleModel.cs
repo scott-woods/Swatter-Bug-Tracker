@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BugTracker.Models
+namespace BugTracker.Models.CommonViewModels
 {
-    public class CommonViewModel
+    public class UserRoleModel
     {
         public UserIndexModel UserModel { get; set; }
         

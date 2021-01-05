@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using BugTracker.Models.Email;
 using BugTracker.Services;
 using BugTracker.Models.Home;
+using BugTracker.Models.CommonViewModels;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -87,6 +88,29 @@ namespace BugTracker.Controllers
             return View(projectModel);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "Manager")]
+        public async Task<IActionResult> NewProject()
+        {
+            var allUsers = _userServices.GetAll();
+            var userModels = await FormatUsersAsync(allUsers);
+            var userIndex = new UserIndexModel
+            {
+                Users = userModels
+            };
+            var project = new Project();
+            var model = new UserProjectModel(project, userIndex);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "Manager")]
+        public IActionResult NewProject(UserProjectModel model)
+        {
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult ProjectDetails(string projectId)
         {
             var project = _projectServices.GetById(Int32.Parse(projectId));
@@ -111,7 +135,7 @@ namespace BugTracker.Controllers
         public async Task<IActionResult> ManageRoles()
         {
             var userModels = _userServices.GetAll();
-            
+
             var listingResult = userModels
                 .Select(result => new UserListingModel
                 {
@@ -123,8 +147,8 @@ namespace BugTracker.Controllers
                     FullName = result.FirstName + " " + result.LastName
                 }
                     ).ToList();
-            
-            for (int i=0; i < listingResult.Count(); i++)
+
+            for (int i = 0; i < listingResult.Count(); i++)
             {
                 //Adds each User's respective roles to the Listing
                 var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
@@ -133,7 +157,7 @@ namespace BugTracker.Controllers
                 string joined = string.Join(", ", rolesResult);
                 listingResult[i].Roles = joined;
             }
-            
+
             var userModel = new UserIndexModel()
             {
                 Users = listingResult
@@ -141,7 +165,7 @@ namespace BugTracker.Controllers
 
             var roleModel = new AlterRoleModel();
 
-            var model = new CommonViewModel()
+            var model = new UserRoleModel()
             {
                 UserModel = userModel,
                 RoleModel = roleModel
@@ -152,7 +176,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> ManageRoles(CommonViewModel model, string addRoles, string removeRoles)
+        public async Task<IActionResult> ManageRoles(UserRoleModel model, string addRoles, string removeRoles)
         {
             if (!ModelState.IsValid)
             {
@@ -204,6 +228,33 @@ namespace BugTracker.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //Helper Functions
+        public async Task<List<UserListingModel>> FormatUsersAsync(IEnumerable<ApplicationUser> userModels)
+        {
+            var listingResult = userModels
+                .Select(result => new UserListingModel
+                {
+                    Id = result.Id,
+                    Email = result.Email ?? "N/A",
+                    FirstName = result.FirstName,
+                    LastName = result.LastName,
+                    UserName = result.UserName,
+                    FullName = result.FirstName + " " + result.LastName
+                }
+                    ).ToList();
+
+            for (int i = 0; i < listingResult.Count(); i++)
+            {
+                //Adds each User's respective roles to the Listing
+                var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
+                var roles = _userManager.GetRolesAsync(appUser);
+                IList<string> rolesResult = await roles;
+                string joined = string.Join(", ", rolesResult);
+                listingResult[i].Roles = joined;
+            }
+            return listingResult;
         }
     }
 }

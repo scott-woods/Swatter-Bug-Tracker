@@ -1,5 +1,6 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Models.Home;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
