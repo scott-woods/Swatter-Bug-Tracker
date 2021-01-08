@@ -26,40 +26,40 @@
                     </div>
                     <div class="col-7 mx-auto">
                         @*<select multiple asp-for="ProjectModel.UserIds" asp-items="@(new SelectList(Model.UserModel.Users, "Id", "FullName"))" style="width:75%" size="5">
-        </select>
-        <span asp-validation-for="ProjectModel.UserIds" class="text-danger" style="display:inline-block;"></span>*@
-                                <div class="card table-responsive" style="height:400px;">
-                                    <div class="card-header">
-                                        <h4>Available Users</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table table-bordererless" style="width:auto;table-layout:fixed" id="dataTable" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Username</th>
-                                                    <th>Roles</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var user in Model.UserModel.Users)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            <input type="checkbox" value="@user.Id" name="userIds" />
-                                                        </td>
-                                                        <td>@user.FullName</td>
-                                                        <td>@user.Email</td>
-                                                        <td>@user.UserName</td>
-                                                        <td>@user.Roles</td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                        </select>
+                        <span asp-validation-for="ProjectModel.UserIds" class="text-danger" style="display:inline-block;"></span>*@
+                        <div class="card table-responsive" style="height:400px;">
+                            <div class="card-header">
+                                <h4>Available Users</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordererless" style="width:auto;table-layout:fixed" id="dataTable" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Username</th>
+                                            <th>Roles</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var user in Model.UserModel.Users)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="@user.Id" name="userIds" />
+                                                </td>
+                                                <td>@user.FullName</td>
+                                                <td>@user.Email</td>
+                                                <td>@user.UserName</td>
+                                                <td>@user.Roles</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @foreach (var user in Model.UserModel.Users)

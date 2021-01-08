@@ -1,5 +1,6 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,15 @@ namespace BugTracker.Services
 
         public IEnumerable<Project> GetAll()
         {
-            return _context.Projects;
+            return _context.Projects
+                .Include(p => p.Creator);
         }
 
         public Project GetById(int id)
         {
-            return _context.Projects.Find(id);
+            return _context.Projects.Where(p => p.Id == id)
+                .Include(p => p.Creator)
+                .FirstOrDefault();
         }
     }
 }

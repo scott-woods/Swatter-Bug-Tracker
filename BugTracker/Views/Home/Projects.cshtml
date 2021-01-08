@@ -12,10 +12,10 @@
                 <table class="table" id="dataTable" width="100%" cellspacing="0" style="table-layout:fixed">
                     <thead>
                         <tr>
-                            <td style="width:10%">Project Name</td>
-                            <td style="width:30%">Description</td>
-                            <td style="width:10%">Last Updated</td>
-                            <td style="width:10%">Last Updated By</td>
+                            <td>Project Name</td>
+                            <td>Description</td>
+                            <td>Last Updated</td>
+                            <td>Last Updated By</td>
                             <td style="width:40%;text-align:right"></td>
                         </tr>
                     </thead>
@@ -34,7 +34,7 @@
                                                 <a class="nav-link"
                                                    asp-controller="Home"
                                                    asp-action="ProjectDetails"
-                                                   asp-route-projectId="@project.Id">Manage Users</a>
+                                                   asp-route-projectId="@project.Id">Manage Project</a>
                                             </span>
                                         </li>
                                     </ul>

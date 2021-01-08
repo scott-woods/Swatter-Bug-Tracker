@@ -7,14 +7,16 @@ namespace BugTracker.Models.Home
 {
     public class ProjectListingModel
     {
-        public string Id { get; set; }
+        public Project EfProject { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreateDate { get; set; }
-        public string CreatorId { get; set; }
-        public string CreatorUsername { get; set; }
+        public ApplicationUser Creator { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public string LastUpdatedById { get; set; }
         public string LastUpdatedByUsername { get; set; }
+        public UserIndexModel UserIndexModel { get; set; } = new UserIndexModel();
+        public IList<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

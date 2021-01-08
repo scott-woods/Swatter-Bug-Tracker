@@ -18,7 +18,7 @@ namespace BugTracker.Models
 
         public string Description { get; set; }
 
-        public ApplicationUser Creator { get; set; }
+        public virtual ApplicationUser Creator { get; set; }
 
         public DateTime CreateDate { get; set; } = System.DateTime.Now;
 
@@ -27,7 +27,5 @@ namespace BugTracker.Models
         public DateTime LastUpdateDate { get; set; } = System.DateTime.Now;
 
         public IList<ProjectUser> ProjectUsers { get; set; } = new List<ProjectUser>();
-
-        public ICollection<Ticket> Tickets { get; set; }
     }
 }
