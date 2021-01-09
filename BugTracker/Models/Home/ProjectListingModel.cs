@@ -16,7 +16,8 @@ namespace BugTracker.Models.Home
         public DateTime LastUpdateDate { get; set; }
         public string LastUpdatedById { get; set; }
         public string LastUpdatedByUsername { get; set; }
-        public UserIndexModel UserIndexModel { get; set; } = new UserIndexModel();
+        public UserIndexModel ProjectUsers { get; set; } = new UserIndexModel();
+        public UserIndexModel AllUsers { get; set; } = new UserIndexModel();
         public IList<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

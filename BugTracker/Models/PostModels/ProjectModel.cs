@@ -8,6 +8,8 @@ namespace BugTracker.Models.PostModels
 {
     public class ProjectModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Please provide a Title for the Project.")]
         [StringLength(30)]
         public string Title { get; set; }
@@ -15,7 +17,6 @@ namespace BugTracker.Models.PostModels
         [StringLength(100)]
         public string Description { get; set; }
 
-        //[Required(ErrorMessage = "Please select at least 1 User.")]
-        public IList<string> UserIds { get; set; }
+        public IList<string> UserIds { get; set; } = new List<string>();
     }
 }

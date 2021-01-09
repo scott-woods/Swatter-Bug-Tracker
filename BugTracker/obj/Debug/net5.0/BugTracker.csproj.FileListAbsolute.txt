@@ -404,3 +404,5 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\ref\BugTracke
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\BugTracker.pdb
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\BugTracker.genruntimeconfig.cache
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\NewProject.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\EditProject.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\_ProjectPartial.cshtml.g.cs

@@ -85,20 +85,28 @@ namespace BugTracker.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> NewProject()
         {
+            //Get all Users from DB and format into List of UserListingModels
             var allUsers = _userServices.GetAll();
             var userModels = await FormatUsersAsync(allUsers);
 
+            //Create UserIndexModel from List
             var userIndex = new UserIndexModel
             {
                 Users = userModels
             };
 
+            //Create Common Model for Project and Users
             var projectModel = new ProjectModel();
             var model = new UserProjectModel
             {
                 UserModel = userIndex,
                 ProjectModel = projectModel
             };
+
+            ViewData["cardHeader"] = "Create New Project";
+            ViewData["buttonLabel"] = "Create Project";
+            ViewData["formTitle"] = "newProjectForm";
+            ViewData["aspAction"] = "NewProject";
 
             return View(model);
         }
@@ -112,36 +120,29 @@ namespace BugTracker.Controllers
                 return View(model);
             }
 
-            //ViewData["userIds"] = userIds;
-
             var newProject = new Project
             {
                 Title = model.ProjectModel.Title,
                 Description = model.ProjectModel.Description,
                 CreateDate = DateTime.Now,
                 Creator = await _userManager.GetUserAsync(User),
-                LastUpdatedBy = await _userManager.GetUserAsync(User)
+                LastUpdatedBy = await _userManager.GetUserAsync(User),
+                LastUpdateDate = DateTime.Now
             };
 
-            List<ApplicationUser> allUsers = new List<ApplicationUser>();
+            List<ApplicationUser> selectedUsers = new List<ApplicationUser>();
 
             foreach (var id in userIds)
             {
                 var user = await _userManager.FindByIdAsync(id);
-                allUsers.Add(user);
+                selectedUsers.Add(user);
             }
 
-            //foreach (var id in model.ProjectModel.UserIds)
-            //{
-            //    var user = await _userManager.FindByIdAsync(id);
-            //    allUsers.Add(user);
-            //}
-
-            for (int i = 0; i < allUsers.Count; i++)
+            for (int i = 0; i < selectedUsers.Count; i++)
             {
                 var projUser = new ProjectUser
                 {
-                    ApplicationUser = allUsers[i],
+                    ApplicationUser = selectedUsers[i],
                     Project = newProject
                 };
                 newProject.ProjectUsers.Add(projUser);
@@ -154,10 +155,10 @@ namespace BugTracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProjectDetails(string projectId)
+        public async Task<IActionResult> ProjectDetails(int projectId)
         {
             //Get project from DB
-            var project = _projectServices.GetById(int.Parse(projectId));
+            var project = _projectServices.GetById(projectId);
 
             //Format Project into Listing Model (adds list of Users and Tickets)
             var listingResult = await FormatProjectAsync(project);
@@ -183,6 +184,103 @@ namespace BugTracker.Controllers
             var listingResult = await FormatProjectAsync(project);
 
             return View(listingResult);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditProject(int projectId)
+        {
+            var project = _projectServices.GetById(projectId);
+            var listingResult = await FormatProjectAsync(project);
+
+            //Add IDs of all Users in project to list
+            List<string> userIds = new List<string>();
+            foreach (var user in listingResult.ProjectUsers.Users)
+            {
+                userIds.Add(user.Id);
+            }
+
+            var projectModel = new ProjectModel
+            {
+                Id = project.Id,
+                Title = project.Title,
+                Description = project.Description,
+                UserIds = userIds
+            };
+
+            var userModel = new UserIndexModel
+            {
+                Users = await FormatUsersAsync(_userServices.GetAll())
+            };
+
+            var model = new UserProjectModel
+            {
+                UserModel = userModel,
+                ProjectModel = projectModel
+            };
+
+            ViewData["cardHeader"] = "Edit Project";
+            ViewData["buttonLabel"] = "Save Changes";
+            ViewData["formTitle"] = "editProjectForm";
+            ViewData["aspAction"] = "EditProject";
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProject(UserProjectModel model, string[] userIds)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //Get Project from DB and change appropriate fields
+            var project = _projectServices.GetById(model.ProjectModel.Id);
+            project.Title = model.ProjectModel.Title;
+            project.Description = model.ProjectModel.Description;
+            project.LastUpdatedBy = await _userManager.GetUserAsync(User);
+            project.LastUpdateDate = DateTime.Now;
+           
+            //Get List of ProjectUsers and their IDs that were already associated with the project
+            var projectUsers = _context.ProjectUsers.Where(p => p.ProjectId == project.Id).ToList();
+            var projUserIds = new List<string>();
+            foreach (var user in projectUsers)
+            {
+                projUserIds.Add(user.UserId);
+                
+                //Remove existing User from ProjectUsers if they were not selected
+                if (!userIds.Contains(user.UserId))
+                {
+                    _context.Remove(user);
+                }
+            }
+
+            //Add selected Users to Project
+            List<ApplicationUser> selectedUsers = new List<ApplicationUser>();
+            foreach (var id in userIds)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                selectedUsers.Add(user);
+            }
+            for (int i = 0; i < selectedUsers.Count; i++)
+            {
+                var projUser = new ProjectUser
+                {
+                    UserId = selectedUsers[i].Id,
+                    ApplicationUser = selectedUsers[i],
+                    Project = project,
+                    ProjectId = project.Id
+                };
+                //If project didn't already have this User, add them
+                if (!projUserIds.Contains(projUser.UserId))
+                {
+                    project.ProjectUsers.Add(projUser);
+                }
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ProjectDetails", new { projectId = project.Id });
         }
 
         [HttpGet]
@@ -315,7 +413,7 @@ namespace BugTracker.Controllers
                 var user = await _userManager.FindByIdAsync(projectUsers[i].UserId);
                 appUsers.Add(user);
             }
-            listingResult.UserIndexModel.Users = await FormatUsersAsync(appUsers);
+            listingResult.ProjectUsers.Users = await FormatUsersAsync(appUsers);
 
             //Add list of associated Tickets to Listing Model
             var projectTickets = _context.Tickets.Where(t => t.Project.Id == project.Id).ToList();
