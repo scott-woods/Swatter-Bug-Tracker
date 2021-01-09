@@ -405,3 +405,8 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\P
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\NewProject.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\ProjectDetails.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Shared\_ProjectPartial.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Shared\_TicketPartial.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Tickets\EditTicket.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Tickets\Index.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Tickets\NewTicket.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Tickets\TicketDetails.cshtml.g.cs

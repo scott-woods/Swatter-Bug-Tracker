@@ -10260,13 +10260,3 @@ body {
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
 }
-
-
-#ProjectInfo {
-    display:flex;
-    flex-direction:row;
-}
-#ProjectInfo > div {
-    display:flex;
-    background-color: green;
-}
