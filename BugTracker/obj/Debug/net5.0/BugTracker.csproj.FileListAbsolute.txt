@@ -383,12 +383,9 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\A
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Account\ResetPassword.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Account\ResetPasswordConfirmation.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\ManageProjectUsers.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\ManageRoles.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\Profile.cshtml.g.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\ProjectDetails.cshtml.g.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\Projects.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\Tickets.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
@@ -403,6 +400,8 @@ C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\BugTracker.dl
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\ref\BugTracker.dll
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\BugTracker.pdb
 C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\BugTracker.genruntimeconfig.cache
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\NewProject.cshtml.g.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\EditProject.cshtml.g.cs
-C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Home\_ProjectPartial.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\EditProject.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\Index.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\NewProject.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\ProjectDetails.cshtml.g.cs
+C:\Users\Scott\source\repos\BugTracker\BugTracker\obj\Debug\net5.0\Razor\Views\Shared\_ProjectPartial.cshtml.g.cs

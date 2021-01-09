@@ -1,12 +1,12 @@
 ﻿@{ 
     ViewBag.Title = "Swatter - Project Details";
 }
-@model BugTracker.Models.Home.ProjectListingModel
+@model BugTracker.Models.Projects.ProjectListingModel
 <div class="container-fluid">
     <div class="row">
         <div class="col">
             <div class="m-2 d-flex">
-                <a class="btn btn-outline-secondary mr-4" asp-action="Projects">Back to Projects</a>
+                <a class="btn btn-outline-secondary mr-4" asp-action="Index">Back to Projects</a>
                 <a class="btn btn-primary"
                    asp-action="EditProject"
                    asp-route-projectId="@Model.Id">Edit Project</a>

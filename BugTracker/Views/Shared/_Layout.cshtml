@@ -60,7 +60,7 @@
                         <div class="sb-sidenav-menu-heading">Projects</div>
                         @if (User.IsInRole("Developer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
                         {
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Projects">
+                            <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="Index">
                                 My Projects
                             </a>
                         }

@@ -1,7 +1,7 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Swatter - Projects";
 }
-@model BugTracker.Models.Home.ProjectIndexModel
+@model BugTracker.Models.Projects.ProjectIndexModel
 <div class="container-fluid">
     <div class="card mt-4 mb-4">
         <div class="card-header">
@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" style="height:400px">
-                <table class="table" id="dataTable" width="100%" cellspacing="0" style="table-layout:fixed">
+                <table class="table table-sm" id="dataTable" width="100%" cellspacing="0" style="table-layout:fixed">
                     <thead>
                         <tr>
                             <td>Project Name</td>
@@ -32,11 +32,17 @@
                                 <td style="text-align:right">
                                     <ul style="display:inline-block">
                                         <li>
-                                            <span style="position:relative;right:20px">
+                                            <span>
                                                 <a class="nav-link"
-                                                   asp-controller="Home"
                                                    asp-action="ProjectDetails"
                                                    asp-route-projectId="@project.Id">Manage Project</a>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>
+                                                <a class="nav-link"
+                                                   asp-action="EditProject"
+                                                   asp-route-projectId="@project.Id">Edit Project</a>
                                             </span>
                                         </li>
                                     </ul>
@@ -48,7 +54,5 @@
             </div>
         </div>
     </div>
-    <form asp-controller="Home" asp-action="NewProject" method="get">
-        <button class="btn btn-primary mb-4">Create New Project</button>
-    </form>
+    <a class="btn btn-primary mb-4" asp-action="NewProject">Create New Project</a>
 </div>

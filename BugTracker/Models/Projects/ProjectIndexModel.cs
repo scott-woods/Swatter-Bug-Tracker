@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BugTracker.Models.Home
+namespace BugTracker.Models.Projects
 {
     public class ProjectIndexModel
     {
