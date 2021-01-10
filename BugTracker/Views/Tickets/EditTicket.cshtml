@@ -1,5 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{ 
+    ViewBag.Title = "Swatter - Edit Ticket";
+    ViewBag.CardTitle = "Edit Ticket";
+    ViewBag.ButtonLabel = "Update Ticket";
+    ViewBag.Action = "EditTicket";
+    ViewBag.FormId = "editTicket";
 }
+@model BugTracker.Models.CommonViewModels.UserTicketModel 
+<div class="container-fluid">
+    <div>
+        <a class="btn btn-outline-secondary mt-4 ml-4 mr-2"
+           asp-controller="Projects"
+           asp-action="ProjectDetails"
+           asp-route-projectId="@Model.TicketModel.ProjectId">Back to Project Details</a>
+        <a class="btn btn-outline-secondary mt-4 ml-2"
+           asp-controller="Tickets"
+           asp-action="TicketDetails"
+           asp-route-ticketId="@Model.TicketModel.Id">Back to Ticket Details</a>
+    </div>
+    @await Html.PartialAsync("_TicketPartial")
+</div>

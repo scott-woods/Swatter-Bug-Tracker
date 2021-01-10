@@ -44,6 +44,7 @@ namespace BugTracker
             //Add Data Model Services
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IProjectServices, ProjectServices>();
+            services.AddScoped<ITicketServices, TicketServices>();
 
             //Database Config
             services.AddDbContext<AppDbContext>(options =>

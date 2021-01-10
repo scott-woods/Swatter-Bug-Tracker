@@ -19,7 +19,7 @@ namespace BugTracker.Services
 
         public void Add(Project project)
         {
-            _context.Add(project);
+            _context.Projects.Add(project);
             _context.SaveChanges();
         }
 

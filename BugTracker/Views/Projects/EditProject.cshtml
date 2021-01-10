@@ -4,8 +4,8 @@
 @model BugTracker.Models.CommonViewModels.UserProjectModel
 <div class="container-fluid">
     <div>
-        <a class="btn btn-outline-secondary mt-2" asp-action="ProjectDetails" asp-route-projectId="@Model.ProjectModel.Id">Back to Project Details</a>
-        <a class="btn btn-outline-secondary mt-2 ml-4" asp-action="Index">Back to Projects</a>
+        <a class="btn btn-outline-secondary mt-4 ml-4 mr-4" asp-action="ProjectDetails" asp-route-projectId="@Model.ProjectModel.Id">Back to Project Details</a>
+        <a class="btn btn-outline-secondary mt-4" asp-action="Index">Back to Projects</a>
     </div>
     @await Html.PartialAsync("_ProjectPartial")
 </div>

@@ -1,5 +1,65 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{ 
+    ViewBag.Title = "Swatter - All Tickets";
 }
+@model BugTracker.Models.Tickets.TicketIndexModel
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card m-4">
+                <div class="card-header">
+                    <h2>All Tickets</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="dataTable table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Project</th>
+                                    <th>Assigned Developer</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Type</th>
+                                    <th>Creator</th>
+                                    <th>Last Updated</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.Tickets)
+                                {
+                                    <tr>
+                                        <td>@ticket.Title</td>
+                                        <td>@ticket.Project.Title</td>
+                                        <td>@ticket.AssignedDeveloper.UserName</td>
+                                        <td>@ticket.TicketPriority</td>
+                                        <td>@ticket.TicketStatus</td>
+                                        <td>@ticket.TicketType</td>
+                                        <td>@ticket.Creator.UserName</td>
+                                        <td>@ticket.LastUpdateDate</td>
+                                        <td>
+                                            <ul style="line-height:5px">
+                                                <li><a class="nav-link" 
+                                                       asp-controller="Tickets" 
+                                                       asp-action="TicketDetails" 
+                                                       asp-route-ticketId="@ticket.Id"
+                                                       >Details</a>
+                                                </li>
+                                                <li><a class="nav-link"
+                                                       asp-controller="Tickets"
+                                                       asp-action="EditTicket"
+                                                       asp-route-ticketId="@ticket.Id"
+                                                       >Edit</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

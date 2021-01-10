@@ -26,6 +26,7 @@ namespace BugTracker.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IUserServices _userServices;
         private readonly IProjectServices _projectServices;
+        private readonly ITicketServices _ticketServices;
         private readonly AppDbContext _context;
 
         public ProjectsController(ILogger<HomeController> logger,
@@ -35,6 +36,7 @@ namespace BugTracker.Controllers
             IEmailSender emailSender,
             IUserServices userServices,
             IProjectServices projectServices,
+            ITicketServices ticketServices,
             AppDbContext context)
         {
             _signInManager = signInManager;
@@ -44,6 +46,7 @@ namespace BugTracker.Controllers
             _emailSender = emailSender;
             _userServices = userServices;
             _projectServices = projectServices;
+            _ticketServices = ticketServices;
             _context = context;
         }
         
@@ -158,25 +161,25 @@ namespace BugTracker.Controllers
             return View(listingResult);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ProjectDetails(ProjectListingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //[HttpPost]
+        //public async Task<IActionResult> ProjectDetails(ProjectListingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            //Save new Title and Description in Database
-            var project = _projectServices.GetById(model.Id);
-            project.Title = model.Title;
-            project.Description = model.Description;
-            _context.SaveChanges();
+        //    //Save new Title and Description in Database
+        //    var project = _projectServices.GetById(model.Id);
+        //    project.Title = model.Title;
+        //    project.Description = model.Description;
+        //    _context.SaveChanges();
 
-            //Format Project into Listing Model (adds list of Users and Tickets)
-            var listingResult = await FormatProjectAsync(project);
+        //    //Format Project into Listing Model (adds list of Users and Tickets)
+        //    var listingResult = await FormatProjectAsync(project);
 
-            return View(listingResult);
-        }
+        //    return View(listingResult);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> EditProject(int projectId)
@@ -328,7 +331,7 @@ namespace BugTracker.Controllers
             listingResult.ProjectUsers.Users = await FormatUsersAsync(appUsers);
 
             //Add list of associated Tickets to Listing Model
-            var projectTickets = _context.Tickets.Where(t => t.Project.Id == project.Id).ToList();
+            var projectTickets = _ticketServices.GetAllByProjectId(project.Id).ToList();
             for (int i = 0; i < projectTickets.Count; i++)
             {
                 listingResult.Tickets.Add(projectTickets[i]);

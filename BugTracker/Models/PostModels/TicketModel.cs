@@ -9,6 +9,8 @@ namespace BugTracker.Models.PostModels
 {
     public class TicketModel
     {
+        public int Id { get; set; }
+
         public int ProjectId { get; set; }
 
         public string Title { get; set; }

@@ -5,6 +5,7 @@ using BugTracker.Models.Email;
 using BugTracker.Models.Home;
 using BugTracker.Models.PostModels;
 using BugTracker.Models.Projects;
+using BugTracker.Models.Tickets;
 using BugTracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace BugTracker.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IUserServices _userServices;
         private readonly IProjectServices _projectServices;
+        private readonly ITicketServices _ticketServices;
         private readonly AppDbContext _context;
 
         public TicketsController(ILogger<HomeController> logger,
@@ -34,6 +36,7 @@ namespace BugTracker.Controllers
             IEmailSender emailSender,
             IUserServices userServices,
             IProjectServices projectServices,
+            ITicketServices ticketServices,
             AppDbContext context)
         {
             _signInManager = signInManager;
@@ -43,12 +46,57 @@ namespace BugTracker.Controllers
             _emailSender = emailSender;
             _userServices = userServices;
             _projectServices = projectServices;
+            _ticketServices = ticketServices;
             _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var tickets = _ticketServices.GetAll().ToList();
+            var model = new TicketIndexModel();
+            foreach (var ticket in tickets)
+            {
+                model.Tickets.Add(FormatTicket(ticket));
+            }
+
+            return View(model);
+        }
+
+        public IActionResult TicketDetails(int ticketId)
+        {
+            var ticket = _ticketServices.GetById(ticketId);
+            var ticketModel = FormatTicket(ticket);
+            var model = new TicketCommentModel
+            {
+                TicketModel = ticketModel,
+                CommentModel = new CommentModel()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(TicketCommentModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("TicketDetails", new { ticketId = model.TicketModel.Id });
+            }
+
+            var ticket = _ticketServices.GetById(model.TicketModel.Id);
+            var currentUser = await _userManager.GetUserAsync(User);
+            var newComment = new Comment
+            {
+                Message = model.CommentModel.Message,
+                Commenter = currentUser,
+                CreateDate = DateTime.Now,
+                Ticket = ticket
+            };
+
+            _context.Comments.Add(newComment);
+            _context.SaveChanges();
+
+            return RedirectToAction("TicketDetails", new { ticketId = model.TicketModel.Id });
         }
 
         [HttpGet]
@@ -73,19 +121,13 @@ namespace BugTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> NewTicket(UserTicketModel model)
         {
-            var ticketModel = model.TicketModel;
-            var currentUser = await _userManager.GetUserAsync(User);
-            _logger.LogInformation(ticketModel.Title);
-            _logger.LogInformation(ticketModel.Description);
-            _logger.LogInformation(ticketModel.ProjectId.ToString());
-            _logger.LogInformation(ticketModel.DeveloperId);
-            _logger.LogInformation(ticketModel.TicketPriority.ToString());
-            _logger.LogInformation(ticketModel.TicketStatus.ToString());
-            _logger.LogInformation(ticketModel.TicketType.ToString());
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
+            var ticketModel = model.TicketModel;
+            var currentUser = await _userManager.GetUserAsync(User);
 
             var ticket = new Ticket
             {
@@ -102,10 +144,64 @@ namespace BugTracker.Controllers
                 TicketType = ticketModel.TicketType
             };
 
-            _context.Tickets.Add(ticket);
+            _ticketServices.Add(ticket);
+
+            return RedirectToAction("ProjectDetails", "Projects", new { projectId = ticketModel.ProjectId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditTicket(int ticketId)
+        {
+            var allUsers = _userServices.GetAll();
+            var formattedUsers = await FormatUsersAsync(allUsers);
+            var userIndex = new UserIndexModel { Users = formattedUsers };
+
+            var ticket = _ticketServices.GetById(ticketId);
+            var ticketModel = new TicketModel
+            {
+                Id = ticket.Id,
+                ProjectId = ticket.Project.Id,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                DeveloperId = ticket.AssignedDeveloper.Id,
+                TicketPriority = ticket.TicketPriority,
+                TicketStatus = ticket.TicketStatus,
+                TicketType = ticket.TicketType
+            };
+
+            var model = new UserTicketModel
+            {
+                UserIndexModel = userIndex,
+                TicketModel = ticketModel
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTicket(UserTicketModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var ticketModel = model.TicketModel;
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            var ticket = _ticketServices.GetById(ticketModel.Id);
+            ticket.Title = ticketModel.Title;
+            ticket.Description = ticketModel.Description;
+            ticket.AssignedDeveloper = await _userManager.FindByIdAsync(ticketModel.DeveloperId);
+            ticket.LastUpdateDate = DateTime.Now;
+            ticket.LastUpdatedBy = currentUser;
+            ticket.TicketPriority = ticketModel.TicketPriority;
+            ticket.TicketStatus = ticketModel.TicketStatus;
+            ticket.TicketType = ticketModel.TicketType;
+
             _context.SaveChanges();
 
-            return RedirectToAction("ProjectDetails", "Projects", new { projectId = model.TicketModel.ProjectId });
+            return RedirectToAction("ProjectDetails", "Projects", new { projectId = ticketModel.ProjectId });
         }
 
         //Helper Functions
@@ -162,10 +258,32 @@ namespace BugTracker.Controllers
 
             //Add list of associated Tickets to Listing Model
             var projectTickets = _context.Tickets.Where(t => t.Project.Id == project.Id).ToList();
-            for (int i = 0; i < projectTickets.Count; i++)
+            listingResult.Tickets = projectTickets;
+            //for (int i = 0; i < projectTickets.Count; i++)
+            //{
+            //    listingResult.Tickets.Add(projectTickets[i]);
+            //}
+
+            return listingResult;
+        }
+        public TicketListingModel FormatTicket(Ticket ticket)
+        {
+            var listingResult = new TicketListingModel
             {
-                listingResult.Tickets.Add(projectTickets[i]);
-            }
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                Project = ticket.Project,
+                AssignedDeveloper = ticket.AssignedDeveloper,
+                CreateDate = ticket.CreateDate,
+                Creator = ticket.Creator,
+                LastUpdateDate = ticket.LastUpdateDate,
+                LastUpdatedBy = ticket.LastUpdatedBy,
+                TicketPriority = ticket.TicketPriority,
+                TicketStatus = ticket.TicketStatus,
+                TicketType = ticket.TicketType,
+                Comments = _context.Comments.Where(c => c.Ticket.Id == ticket.Id).ToList()
+            };
 
             return listingResult;
         }

@@ -22,7 +22,7 @@ namespace BugTracker.Services
 
         public void Add(ApplicationUser user)
         {
-            _context.Add(user);
+            _context.Users.Add(user);
         }
 
         public IEnumerable<ApplicationUser> GetAll()

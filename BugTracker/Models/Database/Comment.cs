@@ -13,11 +13,7 @@ namespace BugTracker.Models
         public ApplicationUser Commenter { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Title { get; set; }
-
-        [Required]
-        [StringLength(250)]
+        [StringLength(150)]
         public string Message { get; set; }
 
         public DateTime CreateDate { get; set; }

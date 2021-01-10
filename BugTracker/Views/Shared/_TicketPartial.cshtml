@@ -1,25 +1,24 @@
 ﻿@using BugTracker.Models
 @model BugTracker.Models.CommonViewModels.UserTicketModel
-<div class="container-fluid">
     <div class="row">
         <div class="col col-6">
-            <div class="card">
+            <div class="card m-4">
                 <div class="card-header">
                     <h1>@ViewBag.CardTitle</h1>
                 </div>
                 <div class="card-body">
                     <form asp-action="@ViewBag.Action" method="post" id="@ViewBag.FormId">
                         <div class="form-row">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="TicketModel.Title">Title</label>
-                                    <input type="text" asp-for="TicketModel.Title" placeholder="Enter a Title" />
+                                    <input class="form-control w-75" type="text" asp-for="TicketModel.Title" placeholder="Enter a Title" />
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label asp-for="TicketModel.Description">Description</label>
-                                    <textarea asp-for="TicketModel.Description" form="@ViewBag.FormId" maxlength="100"></textarea>
+                                    <label asp-for="TicketModel.Description">Description <span class="text-muted small">(0-100 Characters)</span></label>
+                                    <textarea class="form-control" asp-for="TicketModel.Description" form="@ViewBag.FormId" maxlength="100"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -27,13 +26,13 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label asp-for="TicketModel.DeveloperId">Assigned Developer</label>
-                                    <select asp-for="TicketModel.DeveloperId" asp-items="@(new SelectList(Model.UserIndexModel.GetAllDevelopers(), "Id", "FullName"))"></select>
+                                    <select class="form-control w-75" asp-for="TicketModel.DeveloperId" asp-items="@(new SelectList(Model.UserIndexModel.GetAllDevelopers(), "Id", "FullName"))"></select>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label asp-for="TicketModel.TicketPriority">Priority</label>
-                                    <select asp-for="TicketModel.TicketPriority" asp-items="Html.GetEnumSelectList<Priority>()"></select>
+                                    <select class="form-control w-75" asp-for="TicketModel.TicketPriority" asp-items="Html.GetEnumSelectList<Priority>()"></select>
                                 </div>
                             </div>
                         </div>
@@ -41,18 +40,19 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label asp-for="TicketModel.TicketStatus">Status</label>
-                                    <select asp-for="TicketModel.TicketStatus" asp-items="Html.GetEnumSelectList<Status>()"></select>
+                                    <select class="form-control w-75" asp-for="TicketModel.TicketStatus" asp-items="Html.GetEnumSelectList<Status>()"></select>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label asp-for="TicketModel.TicketType">Type</label>
-                                    <select asp-for="TicketModel.TicketType" asp-items="Html.GetEnumSelectList<Ticket_Type>()"></select>
+                                    <select class="form-control w-75" asp-for="TicketModel.TicketType" asp-items="Html.GetEnumSelectList<Ticket_Type>()"></select>
                                 </div>
                             </div>
                         </div>
                         <hr />
                         @Html.HiddenFor(m => m.TicketModel.ProjectId)
+                        @Html.HiddenFor(m => m.TicketModel.Id)
                         @foreach (var user in Model.UserIndexModel.Users)
                         {
                             @Html.HiddenFor(o => o.UserIndexModel.Users[Model.UserIndexModel.Users.IndexOf(user)].Id)
@@ -69,4 +69,3 @@
             </div>
         </div>
     </div>
-</div>
