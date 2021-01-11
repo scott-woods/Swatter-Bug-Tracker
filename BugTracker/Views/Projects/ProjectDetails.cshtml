@@ -1,14 +1,22 @@
 ﻿@{
     ViewBag.Title = "Swatter - Project Details";
+    ViewBag.ModalController = "Tickets";
+    ViewBag.ModalAction = "DeleteTicket";
+    ViewBag.ModalType = "Ticket";
 }
 @model BugTracker.Models.Projects.ProjectListingModel
+
+@await Html.PartialAsync("_DeleteProjectPartial")
+
 <div class="container-fluid">
-    <div>
-        <a class="btn btn-outline-secondary mt-4 ml-4" asp-action="Index">Back to Projects</a>
+    <div class="row">
+        <div class="col px-4 pt-4">
+            <a class="btn btn-outline-secondary" asp-action="Index">Back to Projects</a>
+        </div>
     </div>
     <div class="row">
-        <div class="col col-4">
-            <div class="card m-4">
+        <div class="col col-4 p-4 d-flex">
+            <div class="card w-100">
                 <div class="card-header">
                     <h3>Details for @Model.Title</h3>
                     <a class="nav-link p-0" asp-action="EditProject" asp-route-projectId="@Model.Id">Edit Project</a>
@@ -49,89 +57,102 @@
                 </div>
             </div>
         </div>
-        <div class="col col-8">
-            <div class="row">
-                <div class="col col-12">
-                    <div class="card m-4">
-                        <div class="card-header">
-                            <h3>Project Users</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table table-responsive">
-                                <table class="dataTable table table-bordered" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Role(s)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var user in Model.ProjectUsers.Users)
-                                        {
-                                            <tr>
-                                                <td>@user.UserName</td>
-                                                <td>@user.Email</td>
-                                                <td>@user.Roles</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+        <div class="col col-8 p-4 d-flex">
+            <div class="card w-100">
+                <div class="card-header">
+                    <h3>Project Users</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="dataTable table table-bordered" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role(s)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.ProjectUsers.Users)
+                                {
+                                    <tr>
+                                        <td>@user.UserName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.Roles</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col col-12">
-                    <div class="card m-4">
-                        <div class="card-header">
-                            <h3>Project Tickets</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table table-responsive">
-                                <table class="dataTable table table-bordered" style="width:auto">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Submitter</th>
-                                            <th>Developer</th>
-                                            <th>Status</th>
-                                            <th>Create Date</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var ticket in Model.Tickets)
-                                        {
-                                            <tr>
-                                                <td>@ticket.Title</td>
-                                                <td>@ticket.Creator</td>
-                                                <td>@ticket.AssignedDeveloper.FirstName @ticket.AssignedDeveloper.LastName</td>
-                                                <td>@ticket.TicketStatus</td>
-                                                <td>@ticket.CreateDate</td>
-                                                <td class="float-right">
-                                                    <ul style="line-height:normal;display:inline-block">
-                                                        <li>
-                                                            <span>
-                                                                <a class="nav-link" asp-controller="Tickets" asp-action="TicketDetails" asp-route-ticketId="@ticket.Id">Details</a>
-                                                            </span>
-                                                        </li>
-                                                        <li>
-                                                            <span>
-                                                                <a class="nav-link" asp-controller="Tickets" asp-action="EditTicket" asp-route-ticketId="@ticket.Id">Edit Ticket</a>
-                                                            </span>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                            <a class="btn btn-primary" asp-controller="Tickets" asp-action="NewTicket" asp-route-projectId="@Model.Id">Create New Ticket</a>
-                        </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-12 px-4 pb-4 d-flex">
+            <div class="card w-100">
+                <div class="card-header">
+                    <h3>Project Tickets</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="dataTable table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Submitter</th>
+                                    <th>Assigned Developer</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Type</th>
+                                    <th>Last Updated By</th>
+                                    <th>Last Update</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.Tickets)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@ticket.Title</td>
+                                        <td class="align-middle">@ticket.Creator</td>
+                                        <td class="align-middle">@ticket.AssignedDeveloper.UserName</td>
+                                        <td class="align-middle">@ticket.TicketStatus</td>
+                                        <td class="align-middle">@ticket.TicketPriority</td>
+                                        <td class="align-middle">@ticket.TicketType</td>
+                                        <td class="align-middle">@ticket.LastUpdatedBy.UserName</td>
+                                        <td class="align-middle">@ticket.LastUpdateDate</td>
+                                        <td class="float-right">
+                                            <ul style="line-height:5px">
+                                                <li>
+                                                    <span>
+                                                        <a class="nav-link" asp-controller="Tickets" asp-action="TicketDetails" asp-route-ticketId="@ticket.Id">Details</a>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        <a class="nav-link" asp-controller="Tickets" asp-action="EditTicket" asp-route-ticketId="@ticket.Id">Edit Ticket</a>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <a id="deleteTicketModal"
+                                                       asp-action=""
+                                                       data-toggle="modal"
+                                                       data-target="#modal-delete"
+                                                       data-id="@ticket.Id"
+                                                       data-redirectController="Projects"
+                                                       data-redirectAction="ProjectDetails"
+                                                       data-redirectId="@Model.Id"
+                                                       class="nav-link text-danger">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
+                    <a class="btn btn-primary" asp-controller="Tickets" asp-action="NewTicket" asp-route-projectId="@Model.Id">Create New Ticket</a>
                 </div>
             </div>
         </div>

@@ -117,22 +117,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    @*DataTable Script*@
     <script>
         $('table.dataTable').DataTable();
     </script>
-    
+    @*Modal Delete Script*@
     <script>
         $(function () {
             $('#modal-delete').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var id = button.data("id");
+                var redirectController = ("redirectController");
                 var modal = $(this);
 
                 modal.find('.modal-content input').val(id);
+                modal.find('.modal-content input').val(redirectController);
             });
 
             $("modalDeleteButton").click(function () {
-                $("#myForm").submit();
+                $("#deleteForm").submit();
             });
         });
     </script>

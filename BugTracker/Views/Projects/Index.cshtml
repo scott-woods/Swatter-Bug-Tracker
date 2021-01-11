@@ -1,68 +1,79 @@
 ﻿@{
     ViewBag.Title = "Swatter - Projects";
+    ViewBag.ModalController = "Projects";
+    ViewBag.ModalAction = "DeleteProject";
+    ViewBag.ModalType = "Project";
 }
 @model BugTracker.Models.Projects.ProjectIndexModel
 @await Html.PartialAsync("_DeleteProjectPartial")
 
 <div class="container-fluid">
-    <div class="card m-4">
-        <div class="card-header">
-            <h2>My Projects</h2>
-        </div>
-        <div class="card-body">
-            <div class="table table-responsive" style="height:400px">
-                <table class="dataTable table table-sm" cellspacing="0" style="table-layout:fixed">
-                    <thead>
-                        <tr>
-                            <th>Project Name</th>
-                            <th>Description</th>
-                            <th>Creator</th>
-                            <th>Last Updated</th>
-                            <th>Last Updated By</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var project in Model.Projects)
-                        {
-                            <tr>
-                                <td>@project.Title</td>
-                                <td>@project.Description</td>
-                                <td>@project.Creator.UserName</td>
-                                <td>@project.LastUpdateDate</td>
-                                <td>@project.LastUpdatedBy.UserName</td>
-                                <td class="text-left">
-                                    <ul class="float-right" style="line-height:5px;display:inline-block">
-                                        <li>
-                                            <span>
-                                                <a class="nav-link"
-                                                   asp-action="ProjectDetails"
-                                                   asp-route-projectId="@project.Id">Details</a>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span>
-                                                <a class="nav-link"
-                                                   asp-action="EditProject"
-                                                   asp-route-projectId="@project.Id">Edit Project</a>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <a id="deleteProjectModal"
-                                               asp-action=""
-                                               data-toggle="modal"
-                                               data-target="#modal-delete"
-                                               data-id="@project.Id"
-                                               class="nav-link text-danger">Delete</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="col col-12 p-4 d-flex">
+            <div class="card w-100">
+                <div class="card-header">
+                    <h2>My Projects</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="dataTable table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Description</th>
+                                    <th>Creator</th>
+                                    <th>Last Updated</th>
+                                    <th>Last Updated By</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var project in Model.Projects)
+                                {
+                                    <tr>
+                                        <td>@project.Title</td>
+                                        <td>@project.Description</td>
+                                        <td>@project.Creator.UserName</td>
+                                        <td>@project.LastUpdateDate</td>
+                                        <td>@project.LastUpdatedBy.UserName</td>
+                                        <td class="text-left">
+                                            <ul class="float-right" style="line-height:5px;">
+                                                <li>
+                                                    <span>
+                                                        <a class="nav-link"
+                                                           asp-action="ProjectDetails"
+                                                           asp-route-projectId="@project.Id">Details</a>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        <a class="nav-link"
+                                                           asp-action="EditProject"
+                                                           asp-route-projectId="@project.Id">Edit Project</a>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <a id="deleteProjectModal"
+                                                       asp-action=""
+                                                       data-toggle="modal"
+                                                       data-target="#modal-delete"
+                                                       data-id="@project.Id"
+                                                       class="nav-link text-danger">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <a class="btn btn-primary ml-4 mb-4" asp-action="NewProject">Create New Project</a>
+    <div class="row">
+        <div class="col px-4 pb-4">
+            <a class="btn btn-primary" asp-action="NewProject">Create New Project</a>
+        </div>
+    </div>
 </div>

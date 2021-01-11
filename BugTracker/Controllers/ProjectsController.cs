@@ -260,7 +260,6 @@ namespace BugTracker.Controllers
         [HttpPost]
         public IActionResult DeleteProject(int id)
         {
-            _logger.LogInformation("Project ID: " + id);
             Project project = _projectServices.GetById(id);
             _context.Projects.Remove(project);
             _context.SaveChanges();
