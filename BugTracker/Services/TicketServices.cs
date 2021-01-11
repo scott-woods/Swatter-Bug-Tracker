@@ -1,5 +1,6 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Models.Tickets;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace BugTracker.Services
         public void Add(Ticket ticket)
         {
             _context.Tickets.Add(ticket);
+            _context.SaveChanges();
         }
 
         public Ticket GetById(int id)
@@ -48,6 +50,28 @@ namespace BugTracker.Services
                 .Include(t => t.Creator)
                 .Include(t => t.LastUpdatedBy)
                 .FirstOrDefault();
+        }
+
+        public TicketListingModel FormatTicket(Ticket ticket)
+        {
+            var listingResult = new TicketListingModel
+            {
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                Project = ticket.Project,
+                AssignedDeveloper = ticket.AssignedDeveloper,
+                CreateDate = ticket.CreateDate,
+                Creator = ticket.Creator,
+                LastUpdateDate = ticket.LastUpdateDate,
+                LastUpdatedBy = ticket.LastUpdatedBy,
+                TicketPriority = ticket.TicketPriority,
+                TicketStatus = ticket.TicketStatus,
+                TicketType = ticket.TicketType,
+                Comments = _context.Comments.Where(c => c.Ticket.Id == ticket.Id).ToList()
+            };
+
+            return listingResult;
         }
     }
 }

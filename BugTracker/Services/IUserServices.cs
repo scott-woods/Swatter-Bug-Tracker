@@ -14,5 +14,7 @@ namespace BugTracker.Services
         public void Add(ApplicationUser user);
 
         public ApplicationUser GetById(int id);
+
+        public Task<List<UserListingModel>> FormatUsersAsync(IEnumerable<ApplicationUser> userModels);
     }
 }

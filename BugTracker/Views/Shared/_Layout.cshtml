@@ -120,6 +120,22 @@
     <script>
         $('table.dataTable').DataTable();
     </script>
+    
+    <script>
+        $(function () {
+            $('#modal-delete').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data("id");
+                var modal = $(this);
+
+                modal.find('.modal-content input').val(id);
+            });
+
+            $("modalDeleteButton").click(function () {
+                $("#myForm").submit();
+            });
+        });
+    </script>
 
     <script src="~/js/scripts.js" asp-append-version="true"></script>
     <script src="~/assets/demo/chart-area-demo.js"></script>

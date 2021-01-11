@@ -25,16 +25,34 @@ namespace BugTracker.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            //Adds default date value
             modelBuilder.Entity<Ticket>()
                 .Property(t => t.CreateDate)
                 .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<Ticket>()
+                .HasMany(t => t.Comments)
+                .WithOne(t => t.Ticket)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             modelBuilder.Entity<Comment>()
                 .Property(c => c.CreateDate)
                 .HasDefaultValueSql("getdate()");
+            
             modelBuilder.Entity<Project>()
                 .Property(p => p.CreateDate)
                 .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<Project>()
+                .HasMany(p => p.Tickets)
+                .WithOne(p => p.Project)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Project>()
+                .HasMany(p => p.ProjectUsers)
+                .WithOne(p => p.Project)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.ProjectUsers)
+                .WithOne(u => u.ApplicationUser)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<ProjectUser>()

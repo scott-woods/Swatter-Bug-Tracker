@@ -19,4 +19,4 @@
         e.preventDefault();
         $("body").toggleClass("sb-sidenav-toggled");
     });
-})(jQuery);
+    })(jQuery);

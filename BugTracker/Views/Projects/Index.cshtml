@@ -2,6 +2,8 @@
     ViewBag.Title = "Swatter - Projects";
 }
 @model BugTracker.Models.Projects.ProjectIndexModel
+@await Html.PartialAsync("_DeleteProjectPartial")
+
 <div class="container-fluid">
     <div class="card m-4">
         <div class="card-header">
@@ -28,7 +30,7 @@
                                 <td>@project.Description</td>
                                 <td>@project.Creator.UserName</td>
                                 <td>@project.LastUpdateDate</td>
-                                <td>@project.LastUpdatedByUsername</td>
+                                <td>@project.LastUpdatedBy.UserName</td>
                                 <td class="text-left">
                                     <ul class="float-right" style="line-height:5px;display:inline-block">
                                         <li>
@@ -44,6 +46,14 @@
                                                    asp-action="EditProject"
                                                    asp-route-projectId="@project.Id">Edit Project</a>
                                             </span>
+                                        </li>
+                                        <li>
+                                            <a id="deleteProjectModal"
+                                               asp-action=""
+                                               data-toggle="modal"
+                                               data-target="#modal-delete"
+                                               data-id="@project.Id"
+                                               class="nav-link text-danger">Delete</a>
                                         </li>
                                     </ul>
                                 </td>

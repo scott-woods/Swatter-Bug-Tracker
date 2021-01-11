@@ -4,14 +4,16 @@ using BugTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BugTracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210111020744_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,9 +372,8 @@ namespace BugTracker.Migrations
                         .HasForeignKey("CommenterId");
 
                     b.HasOne("BugTracker.Models.Ticket", "Ticket")
-                        .WithMany("Comments")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("TicketId");
 
                     b.Navigation("Commenter");
 
@@ -429,8 +430,7 @@ namespace BugTracker.Migrations
 
                     b.HasOne("BugTracker.Models.Project", "Project")
                         .WithMany("Tickets")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProjectId");
 
                     b.Navigation("AssignedDeveloper");
 
@@ -502,11 +502,6 @@ namespace BugTracker.Migrations
                     b.Navigation("ProjectUsers");
 
                     b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("BugTracker.Models.Ticket", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

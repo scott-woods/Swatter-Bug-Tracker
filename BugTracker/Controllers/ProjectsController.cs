@@ -63,8 +63,7 @@ namespace BugTracker.Controllers
                     CreateDate = result.CreateDate,
                     Creator = result.Creator,
                     LastUpdateDate = result.LastUpdateDate,
-                    LastUpdatedById = (result.LastUpdatedBy == null ? "N/A" : result.LastUpdatedBy.Id),
-                    LastUpdatedByUsername = (result.LastUpdatedBy == null ? "N/A" : result.LastUpdatedBy.UserName)
+                    LastUpdatedBy = result.LastUpdatedBy
                 }
                     ).ToList();
 
@@ -82,7 +81,7 @@ namespace BugTracker.Controllers
         {
             //Get all Users from DB and format into List of UserListingModels
             var allUsers = _userServices.GetAll();
-            var userModels = await FormatUsersAsync(allUsers);
+            var userModels = await _userServices.FormatUsersAsync(allUsers);
 
             //Create UserIndexModel from List
             var userIndex = new UserIndexModel
@@ -156,36 +155,16 @@ namespace BugTracker.Controllers
             var project = _projectServices.GetById(projectId);
 
             //Format Project into Listing Model (adds list of Users and Tickets)
-            var listingResult = await FormatProjectAsync(project);
+            var listingResult = await _projectServices.FormatProjectAsync(project);
 
             return View(listingResult);
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> ProjectDetails(ProjectListingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    //Save new Title and Description in Database
-        //    var project = _projectServices.GetById(model.Id);
-        //    project.Title = model.Title;
-        //    project.Description = model.Description;
-        //    _context.SaveChanges();
-
-        //    //Format Project into Listing Model (adds list of Users and Tickets)
-        //    var listingResult = await FormatProjectAsync(project);
-
-        //    return View(listingResult);
-        //}
 
         [HttpGet]
         public async Task<IActionResult> EditProject(int projectId)
         {
             var project = _projectServices.GetById(projectId);
-            var listingResult = await FormatProjectAsync(project);
+            var listingResult = await _projectServices.FormatProjectAsync(project);
 
             //Add IDs of all Users in project to list
             List<string> userIds = new List<string>();
@@ -204,7 +183,7 @@ namespace BugTracker.Controllers
 
             var userModel = new UserIndexModel
             {
-                Users = await FormatUsersAsync(_userServices.GetAll())
+                Users = await _userServices.FormatUsersAsync(_userServices.GetAll())
             };
 
             var model = new UserProjectModel
@@ -277,67 +256,15 @@ namespace BugTracker.Controllers
 
             return RedirectToAction("ProjectDetails", new { projectId = project.Id });
         }
-        
-        //Helper Functions
-        public async Task<List<UserListingModel>> FormatUsersAsync(IEnumerable<ApplicationUser> userModels)
+
+        [HttpPost]
+        public IActionResult DeleteProject(int id)
         {
-            var listingResult = userModels
-                .Select(result => new UserListingModel
-                {
-                    Id = result.Id,
-                    Email = result.Email ?? "N/A",
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
-                    UserName = result.UserName,
-                    FullName = result.FirstName + " " + result.LastName
-                }
-                    ).ToList();
-
-            for (int i = 0; i < listingResult.Count; i++)
-            {
-                //Adds each User's respective roles to the Listing
-                var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
-                var roles = _userManager.GetRolesAsync(appUser);
-                IList<string> rolesResult = await roles;
-                string joined = string.Join(", ", rolesResult);
-                listingResult[i].Roles = joined;
-            }
-            return listingResult;
-        }
-        public async Task<ProjectListingModel> FormatProjectAsync(Project project)
-        {
-            //Format project into Project Listing Model
-            var listingResult = new ProjectListingModel
-            {
-                EfProject = project,
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.Description,
-                CreateDate = project.CreateDate,
-                Creator = (project.Creator == null ? null : project.Creator),
-                LastUpdateDate = project.LastUpdateDate,
-                LastUpdatedById = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.Id),
-                LastUpdatedByUsername = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.UserName)
-            };
-
-            //Add a UserIndexModel of associated ApplicationUsers to Listing Model
-            var appUsers = new List<ApplicationUser>();
-            var projectUsers = _context.ProjectUsers.Where(p => p.ProjectId == project.Id).ToList();
-            for (int i = 0; i < projectUsers.Count; i++)
-            {
-                var user = await _userManager.FindByIdAsync(projectUsers[i].UserId);
-                appUsers.Add(user);
-            }
-            listingResult.ProjectUsers.Users = await FormatUsersAsync(appUsers);
-
-            //Add list of associated Tickets to Listing Model
-            var projectTickets = _ticketServices.GetAllByProjectId(project.Id).ToList();
-            for (int i = 0; i < projectTickets.Count; i++)
-            {
-                listingResult.Tickets.Add(projectTickets[i]);
-            }
-
-            return listingResult;
+            _logger.LogInformation("Project ID: " + id);
+            Project project = _projectServices.GetById(id);
+            _context.Projects.Remove(project);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

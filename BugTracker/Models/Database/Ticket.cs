@@ -36,6 +36,8 @@ namespace BugTracker.Models
         public DateTime LastUpdateDate { get; set; }
 
         public ApplicationUser LastUpdatedBy { get; set; }
+
+        public IList<Comment> Comments { get; set; }
     }
 
     public enum Status

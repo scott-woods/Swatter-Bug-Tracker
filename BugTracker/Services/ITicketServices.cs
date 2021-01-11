@@ -1,4 +1,5 @@
 ﻿using BugTracker.Models;
+using BugTracker.Models.Tickets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace BugTracker.Services
         public IEnumerable<Ticket> GetAllByProjectId(int projectId);
         public void Add(Ticket ticket);
         public Ticket GetById(int id);
+        public TicketListingModel FormatTicket(Ticket ticket);
     }
 }

@@ -45,16 +45,16 @@
                         @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Email)
                         @Html.HiddenFor(o => o.UserModel.Users[Model.UserModel.Users.IndexOf(user)].Roles)
                     }
-                <div class="form-group mt-4">
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary btn-block" type="submit" name="addRoles" value="AddRoles">Add Roles</button>
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-primary btn-block" type="submit" name="removeRoles" value="RemoveRoles">Remove Roles</button>
+                    <div class="form-group mt-4">
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary btn-block" type="submit" name="addRoles" value="AddRoles">Add Roles</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary btn-block" type="submit" name="removeRoles" value="RemoveRoles">Remove Roles</button>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>

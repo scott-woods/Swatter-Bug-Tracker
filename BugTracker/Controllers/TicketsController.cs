@@ -56,7 +56,7 @@ namespace BugTracker.Controllers
             var model = new TicketIndexModel();
             foreach (var ticket in tickets)
             {
-                model.Tickets.Add(FormatTicket(ticket));
+                model.Tickets.Add(_ticketServices.FormatTicket(ticket));
             }
 
             return View(model);
@@ -65,7 +65,7 @@ namespace BugTracker.Controllers
         public IActionResult TicketDetails(int ticketId)
         {
             var ticket = _ticketServices.GetById(ticketId);
-            var ticketModel = FormatTicket(ticket);
+            var ticketModel = _ticketServices.FormatTicket(ticket);
             var model = new TicketCommentModel
             {
                 TicketModel = ticketModel,
@@ -104,7 +104,7 @@ namespace BugTracker.Controllers
         {
             //Get all Users and format into Index Model
             var allUsers = _userServices.GetAll();
-            var formattedUsers = await FormatUsersAsync(allUsers);
+            var formattedUsers = await _userServices.FormatUsersAsync(allUsers);
             var userIndex = new UserIndexModel { Users = formattedUsers };
 
             var ticketModel = new TicketModel { ProjectId = projectId };
@@ -153,7 +153,7 @@ namespace BugTracker.Controllers
         public async Task<IActionResult> EditTicket(int ticketId)
         {
             var allUsers = _userServices.GetAll();
-            var formattedUsers = await FormatUsersAsync(allUsers);
+            var formattedUsers = await _userServices.FormatUsersAsync(allUsers);
             var userIndex = new UserIndexModel { Users = formattedUsers };
 
             var ticket = _ticketServices.GetById(ticketId);
@@ -204,88 +204,88 @@ namespace BugTracker.Controllers
             return RedirectToAction("ProjectDetails", "Projects", new { projectId = ticketModel.ProjectId });
         }
 
-        //Helper Functions
-        public async Task<List<UserListingModel>> FormatUsersAsync(IEnumerable<ApplicationUser> userModels)
-        {
-            var listingResult = userModels
-                .Select(result => new UserListingModel
-                {
-                    Id = result.Id,
-                    Email = result.Email ?? "N/A",
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
-                    UserName = result.UserName,
-                    FullName = result.FirstName + " " + result.LastName
-                }
-                    ).ToList();
+        ////Helper Functions
+        //public async Task<List<UserListingModel>> FormatUsersAsync(IEnumerable<ApplicationUser> userModels)
+        //{
+        //    var listingResult = userModels
+        //        .Select(result => new UserListingModel
+        //        {
+        //            Id = result.Id,
+        //            Email = result.Email ?? "N/A",
+        //            FirstName = result.FirstName,
+        //            LastName = result.LastName,
+        //            UserName = result.UserName,
+        //            FullName = result.FirstName + " " + result.LastName
+        //        }
+        //            ).ToList();
 
-            for (int i = 0; i < listingResult.Count; i++)
-            {
-                //Adds each User's respective roles to the Listing
-                var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
-                var roles = _userManager.GetRolesAsync(appUser);
-                IList<string> rolesResult = await roles;
-                string joined = string.Join(", ", rolesResult);
-                listingResult[i].Roles = joined;
-            }
-            return listingResult;
-        }
-        public async Task<ProjectListingModel> FormatProjectAsync(Project project)
-        {
-            //Format project into Project Listing Model
-            var listingResult = new ProjectListingModel
-            {
-                EfProject = project,
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.Description,
-                CreateDate = project.CreateDate,
-                Creator = (project.Creator == null ? null : project.Creator),
-                LastUpdateDate = project.LastUpdateDate,
-                LastUpdatedById = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.Id),
-                LastUpdatedByUsername = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.UserName)
-            };
+        //    for (int i = 0; i < listingResult.Count; i++)
+        //    {
+        //        //Adds each User's respective roles to the Listing
+        //        var appUser = await _userManager.FindByIdAsync(listingResult[i].Id);
+        //        var roles = _userManager.GetRolesAsync(appUser);
+        //        IList<string> rolesResult = await roles;
+        //        string joined = string.Join(", ", rolesResult);
+        //        listingResult[i].Roles = joined;
+        //    }
+        //    return listingResult;
+        //}
+        //public async Task<ProjectListingModel> FormatProjectAsync(Project project)
+        //{
+        //    //Format project into Project Listing Model
+        //    var listingResult = new ProjectListingModel
+        //    {
+        //        EfProject = project,
+        //        Id = project.Id,
+        //        Title = project.Title,
+        //        Description = project.Description,
+        //        CreateDate = project.CreateDate,
+        //        Creator = (project.Creator == null ? null : project.Creator),
+        //        LastUpdateDate = project.LastUpdateDate,
+        //        LastUpdatedById = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.Id),
+        //        LastUpdatedByUsername = (project.LastUpdatedBy == null ? "N/A" : project.LastUpdatedBy.UserName)
+        //    };
 
-            //Add a UserIndexModel of associated ApplicationUsers to Listing Model
-            var appUsers = new List<ApplicationUser>();
-            var projectUsers = _context.ProjectUsers.Where(p => p.ProjectId == project.Id).ToList();
-            for (int i = 0; i < projectUsers.Count; i++)
-            {
-                var user = await _userManager.FindByIdAsync(projectUsers[i].UserId);
-                appUsers.Add(user);
-            }
-            listingResult.ProjectUsers.Users = await FormatUsersAsync(appUsers);
+        //    //Add a UserIndexModel of associated ApplicationUsers to Listing Model
+        //    var appUsers = new List<ApplicationUser>();
+        //    var projectUsers = _context.ProjectUsers.Where(p => p.ProjectId == project.Id).ToList();
+        //    for (int i = 0; i < projectUsers.Count; i++)
+        //    {
+        //        var user = await _userManager.FindByIdAsync(projectUsers[i].UserId);
+        //        appUsers.Add(user);
+        //    }
+        //    listingResult.ProjectUsers.Users = await FormatUsersAsync(appUsers);
 
-            //Add list of associated Tickets to Listing Model
-            var projectTickets = _context.Tickets.Where(t => t.Project.Id == project.Id).ToList();
-            listingResult.Tickets = projectTickets;
-            //for (int i = 0; i < projectTickets.Count; i++)
-            //{
-            //    listingResult.Tickets.Add(projectTickets[i]);
-            //}
+        //    //Add list of associated Tickets to Listing Model
+        //    var projectTickets = _context.Tickets.Where(t => t.Project.Id == project.Id).ToList();
+        //    listingResult.Tickets = projectTickets;
+        //    //for (int i = 0; i < projectTickets.Count; i++)
+        //    //{
+        //    //    listingResult.Tickets.Add(projectTickets[i]);
+        //    //}
 
-            return listingResult;
-        }
-        public TicketListingModel FormatTicket(Ticket ticket)
-        {
-            var listingResult = new TicketListingModel
-            {
-                Id = ticket.Id,
-                Title = ticket.Title,
-                Description = ticket.Description,
-                Project = ticket.Project,
-                AssignedDeveloper = ticket.AssignedDeveloper,
-                CreateDate = ticket.CreateDate,
-                Creator = ticket.Creator,
-                LastUpdateDate = ticket.LastUpdateDate,
-                LastUpdatedBy = ticket.LastUpdatedBy,
-                TicketPriority = ticket.TicketPriority,
-                TicketStatus = ticket.TicketStatus,
-                TicketType = ticket.TicketType,
-                Comments = _context.Comments.Where(c => c.Ticket.Id == ticket.Id).ToList()
-            };
+        //    return listingResult;
+        //}
+        //public TicketListingModel FormatTicket(Ticket ticket)
+        //{
+        //    var listingResult = new TicketListingModel
+        //    {
+        //        Id = ticket.Id,
+        //        Title = ticket.Title,
+        //        Description = ticket.Description,
+        //        Project = ticket.Project,
+        //        AssignedDeveloper = ticket.AssignedDeveloper,
+        //        CreateDate = ticket.CreateDate,
+        //        Creator = ticket.Creator,
+        //        LastUpdateDate = ticket.LastUpdateDate,
+        //        LastUpdatedBy = ticket.LastUpdatedBy,
+        //        TicketPriority = ticket.TicketPriority,
+        //        TicketStatus = ticket.TicketStatus,
+        //        TicketType = ticket.TicketType,
+        //        Comments = _context.Comments.Where(c => c.Ticket.Id == ticket.Id).ToList()
+        //    };
 
-            return listingResult;
-        }
+        //    return listingResult;
+        //}
     }
 }
