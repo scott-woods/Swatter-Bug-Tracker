@@ -157,6 +157,11 @@ namespace BugTracker.Controllers
             //Format Project into Listing Model (adds list of Users and Tickets)
             var listingResult = await _projectServices.FormatProjectAsync(project);
 
+            foreach(var ticket in listingResult.Tickets)
+            {
+                _logger.LogInformation("Ticket Title: " + ticket.Title);
+            }
+
             return View(listingResult);
         }
 

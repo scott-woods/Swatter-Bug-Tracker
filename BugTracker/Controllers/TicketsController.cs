@@ -204,13 +204,21 @@ namespace BugTracker.Controllers
             return RedirectToAction("ProjectDetails", "Projects", new { projectId = ticketModel.ProjectId });
         }
 
-        [HttpPost]
-        public IActionResult DeleteTicket(int id, string redirectController, string redirectAction, int redirectId)
+        [HttpGet]
+        public IActionResult DeleteTicket(int id)
         {
-            //var ticket = _ticketServices.GetById(id);
-            //_context.Remove(ticket);
-            //_context.SaveChanges();
-            return RedirectToAction(redirectAction, redirectController, new { projectId = redirectId });
+            _logger.LogInformation("Ticket ID: " + id.ToString());
+            var ticket = _ticketServices.GetById(id);
+            return PartialView("_DeleteProjectPartial", ticket);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTicket(Ticket ticket)
+        {
+            var projId = ticket.Project.Id;
+            _context.Tickets.Remove(ticket);
+            _context.SaveChanges();
+            return PartialView("_DeleteProjectPartial", ticket);
         }
     }
 }
