@@ -6,7 +6,7 @@
 }
 @model BugTracker.Models.Projects.ProjectListingModel
 
-@await Html.PartialAsync("_DeleteProjectPartial")
+<div id="PlaceHolderHere"></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -136,14 +136,11 @@
                                                 </li>
                                                 <li>
                                                     <a id="deleteTicketModal"
-                                                       asp-action=""
-                                                       data-toggle="modal"
+                                                       data-toggle="ajax-modal"
                                                        data-target="#modal-delete"
-                                                       data-id="@ticket.Id"
-                                                       data-redirectController="Projects"
-                                                       data-redirectAction="ProjectDetails"
-                                                       data-redirectId="@Model.Id"
-                                                       class="nav-link text-danger">Delete</a>
+                                                       data-url="@Url.Action("DeleteTicket", "Tickets", new { id = ticket.Id })"
+                                                       class="nav-link text-danger"
+                                                       style="cursor:pointer">Delete</a>
                                                 </li>
                                             </ul>
                                         </td>
