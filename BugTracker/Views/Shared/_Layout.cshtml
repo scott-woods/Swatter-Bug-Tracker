@@ -74,9 +74,9 @@
                         @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
                         {
                             <div class="sb-sidenav-menu-heading">Manage</div>
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ManageProjectUsers">
+                            @*<a class="nav-link" asp-area="" asp-controller="Home" asp-action="ManageProjectUsers">
                                 Manage Project Users
-                            </a>
+                            </a>*@
                             @if (User.IsInRole("Admin"))
                             {
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ManageRoles">
@@ -122,44 +122,31 @@
         $('table.dataTable').DataTable();
     </script>
     @*Modal Delete Script*@
-    @*<script>
-        $(function () {
-            $('#modal-delete').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var id = button.data("id");
-                var redirectController = ("redirectController");
-                var modal = $(this);
-
-                //modal.find('.modal-content input').val(id);
-                modal.find('.modal-content input').val(redirectController);
-            });
-
-            $("modalDeleteButton").click(function () {
-                $("#deleteForm").submit();
-            });
-        });
-    </script>*@
-
     <script>
         $(function () {
-            var PlaceHolderElement = $('#PlaceHolderHere');
+            var DeleteModalElement = $('#DeleteModal');
             $('a[data-toggle="ajax-modal"]').click(function (event) {
                 var url = $(this).data('url');
                 var decodedUrl = decodeURIComponent(url);
                 $.get(decodedUrl).done(function (data) {
-                    PlaceHolderElement.html(data);
-                    PlaceHolderElement.find('.modal').modal('show');
+                    DeleteModalElement.html(data);
+                    DeleteModalElement.find('.modal').modal('show');
                 })
             })
 
-            PlaceHolderElement.on('click', '[data-save="modal"]', function (event) {
+            DeleteModalElement.on('click', '[data-save="modal"]', function (event) {
                 event.preventDefault();
                 var form = $(this).parents('.modal').find('form');
                 var actionUrl = form.attr('action');
+                var dataArray = form.serializeArray(), dataObj = {};
+                $(dataArray).each(function (i, field) {
+                    dataObj[field.name] = field.value;
+                });
                 var sendData = form.serialize();
                 $.post(actionUrl, sendData).done(function (data) {
-                    PlaceHolderElement.find('.modal').modal('hide');
-                    window.location.reload(true);
+                    DeleteModalElement.find('.modal').modal('hide');
+                    window.location.href = dataObj['redirectUrl'];
+                    //window.location.reload(true);
                 })
             })
         })

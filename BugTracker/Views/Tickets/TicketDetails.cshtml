@@ -2,6 +2,7 @@
     ViewBag.Title = "Swatter - Ticket Details";
 }
 @model BugTracker.Models.CommonViewModels.TicketCommentModel
+<div id="DeleteModal"></div>
 <div class="container-fluid">
     <div>
         <a class="btn btn-outline-secondary ml-4 mt-4"
@@ -19,6 +20,12 @@
             <div class="card m-4">
                 <div class="card-header">
                     <h4>Details for Ticket #@Model.TicketModel.Id</h4>
+                    <a class="nav-link p-0" asp-action="EditTicket" asp-route-ticketId ="@Model.TicketModel.Id">Edit Ticket</a>
+                    <a class="nav-link text-danger p-0"
+                       data-toggle="ajax-modal"
+                       data-target="#modal-delete"
+                       data-url="@Url.Action("DeleteTicket", "Tickets", new { id = Model.TicketModel.Id })"
+                       style="cursor:pointer">Delete Ticket</a>
                 </div>
                 <div class="card-body">
                     <div class="row text-center">
@@ -105,9 +112,9 @@
                                 @foreach (var comment in Model.TicketModel.Comments)
                                 {
                                     <tr>
-                                        <td>@comment.Commenter.UserName</td>
-                                        <td>@comment.Message</td>
-                                        <td>@comment.CreateDate</td>
+                                        <td class="align-middle">@comment.Commenter.UserName</td>
+                                        <td class="align-middle">@comment.Message</td>
+                                        <td class="align-middle">@comment.CreateDate</td>
                                     </tr>
                                 }
                             </tbody>

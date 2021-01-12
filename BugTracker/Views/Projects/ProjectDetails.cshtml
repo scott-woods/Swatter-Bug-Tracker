@@ -6,7 +6,7 @@
 }
 @model BugTracker.Models.Projects.ProjectListingModel
 
-<div id="PlaceHolderHere"></div>
+<div id="DeleteModal"></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -20,6 +20,11 @@
                 <div class="card-header">
                     <h3>Details for @Model.Title</h3>
                     <a class="nav-link p-0" asp-action="EditProject" asp-route-projectId="@Model.Id">Edit Project</a>
+                    <a class="nav-link text-danger p-0"
+                       data-toggle="ajax-modal"
+                       data-target="#modal-delete"
+                       data-url="@Url.Action("DeleteProject", "Projects", new { id = Model.Id })"
+                       style="cursor:pointer">Delete Project</a>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -76,9 +81,9 @@
                                 @foreach (var user in Model.ProjectUsers.Users)
                                 {
                                     <tr>
-                                        <td>@user.UserName</td>
-                                        <td>@user.Email</td>
-                                        <td>@user.Roles</td>
+                                        <td class="align-middle">@user.UserName</td>
+                                        <td class="align-middle">@user.Email</td>
+                                        <td class="align-middle">@user.Roles</td>
                                     </tr>
                                 }
                             </tbody>

@@ -32,14 +32,14 @@
                                 @foreach (var ticket in Model.Tickets)
                                 {
                                     <tr>
-                                        <td>@ticket.Title</td>
-                                        <td>@ticket.Project.Title</td>
-                                        <td>@ticket.AssignedDeveloper.UserName</td>
-                                        <td>@ticket.TicketPriority</td>
-                                        <td>@ticket.TicketStatus</td>
-                                        <td>@ticket.TicketType</td>
-                                        <td>@ticket.Creator.UserName</td>
-                                        <td>@ticket.LastUpdateDate</td>
+                                        <td class="align-middle">@ticket.Title</td>
+                                        <td class="align-middle">@ticket.Project.Title</td>
+                                        <td class="align-middle">@ticket.AssignedDeveloper.UserName</td>
+                                        <td class="align-middle">@ticket.TicketPriority</td>
+                                        <td class="align-middle">@ticket.TicketStatus</td>
+                                        <td class="align-middle">@ticket.TicketType</td>
+                                        <td class="align-middle">@ticket.Creator.UserName</td>
+                                        <td class="align-middle">@ticket.LastUpdateDate</td>
                                         <td>
                                             <ul style="line-height:5px">
                                                 <li><a class="nav-link" 
@@ -54,6 +54,13 @@
                                                        asp-route-ticketId="@ticket.Id"
                                                        >Edit</a>
                                                 </li>
+                                                @*<li>
+                                                    <a class="nav-link text-danger"
+                                                       data-toggle="ajax-modal"
+                                                       data-target="delete-modal"
+                                                       data-url="@Url.Action("DeleteTicket", "Tickets", new { ticketId = ticket.Id })"
+                                                       style="cursor:pointer">Delete</a>
+                                                </li>*@
                                             </ul>
                                         </td>
                                     </tr>

@@ -262,13 +262,19 @@ namespace BugTracker.Controllers
             return RedirectToAction("ProjectDetails", new { projectId = project.Id });
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult DeleteProject(int id)
         {
-            Project project = _projectServices.GetById(id);
+            var project = _projectServices.GetById(id);
+            return PartialView("_DeleteProjectPartial", project);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProject(Project project)
+        {
             _context.Projects.Remove(project);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return PartialView("_DeleteProjectPartial", project);
         }
     }
 }

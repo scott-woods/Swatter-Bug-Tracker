@@ -207,9 +207,8 @@ namespace BugTracker.Controllers
         [HttpGet]
         public IActionResult DeleteTicket(int id)
         {
-            _logger.LogInformation("Ticket ID: " + id.ToString());
             var ticket = _ticketServices.GetById(id);
-            return PartialView("_DeleteProjectPartial", ticket);
+            return PartialView("_DeleteTicketPartial", ticket);
         }
 
         [HttpPost]
@@ -218,7 +217,7 @@ namespace BugTracker.Controllers
             var projId = ticket.Project.Id;
             _context.Tickets.Remove(ticket);
             _context.SaveChanges();
-            return PartialView("_DeleteProjectPartial", ticket);
+            return PartialView("_DeleteTicketPartial", ticket);
         }
     }
 }

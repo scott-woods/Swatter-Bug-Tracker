@@ -6,7 +6,7 @@
 }
 @model BugTracker.Models.Projects.ProjectIndexModel
 
-<div id="PlaceHolderHere"></div>
+<div id="DeleteModal"></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -32,11 +32,11 @@
                                 @foreach (var project in Model.Projects)
                                 {
                                     <tr>
-                                        <td>@project.Title</td>
-                                        <td>@project.Description</td>
-                                        <td>@project.Creator.UserName</td>
-                                        <td>@project.LastUpdateDate</td>
-                                        <td>@project.LastUpdatedBy.UserName</td>
+                                        <td class="align-middle">@project.Title</td>
+                                        <td class="align-middle">@project.Description</td>
+                                        <td class="align-middle">@project.Creator.UserName</td>
+                                        <td class="align-middle">@project.LastUpdateDate</td>
+                                        <td class="align-middle">@project.LastUpdatedBy.UserName</td>
                                         <td class="text-left">
                                             <ul class="float-right" style="line-height:5px;">
                                                 <li>
@@ -54,12 +54,11 @@
                                                     </span>
                                                 </li>
                                                 <li>
-                                                    <a id="deleteProjectModal"
-                                                       asp-action=""
-                                                       data-toggle="modal"
+                                                    <a class="nav-link text-danger"
+                                                       data-toggle="ajax-modal"
                                                        data-target="#modal-delete"
-                                                       data-id="@project.Id"
-                                                       class="nav-link text-danger">Delete</a>
+                                                       data-url="@Url.Action("DeleteProject", "Projects", new { id = project.Id })"
+                                                       style="cursor:pointer">Delete</a>
                                                 </li>
                                             </ul>
                                         </td>
