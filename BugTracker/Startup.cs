@@ -49,7 +49,7 @@ namespace BugTracker
             //Database Config
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("SwatterConnection")));
+                    Configuration.GetConnectionString("AzureConnection")));
 
             //Identity Config
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
