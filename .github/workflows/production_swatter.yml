@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'swatter'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_250eb99d127e48b29866e8b5219287c1 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_290ad9a72ffb4cf18c66c45e2735baee }}
         package: ${{env.DOTNET_ROOT}}/myapp 
