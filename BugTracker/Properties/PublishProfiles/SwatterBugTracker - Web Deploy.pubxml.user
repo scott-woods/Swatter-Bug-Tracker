@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA4huyc8x+Q0alinJ+xhNnuAAAAAACAAAAAAAQZgAAAAEAACAAAAAApfMv9HJ/f/xH2y0Y/IMcXQ6duTI0IutWitLxe5Zg+AAAAAAOgAAAAAIAACAAAAC+wD5ITC5abA1bTcBt5UVhAG3YZKoX5hMUqdYJLPPIHoAAAAC3+PLHbAB1BLXw2lIpqk7uhQUmZ1vIeH9Qc4NUcsOYzgxkZNnlyc6E1Vh37FQGr7eJHVJdYsOaCnRrUxlCQ2BKQ63PmR5mcAwQ+aLcSSHS4h1U/KAd/5b5ujMet+Hv0spj9ueKosgiYzNfjPBZmlBfzByOTOCx4rOg0aGdkK/5DUAAAABmZp+na0b9JrmlpsWj+9Tfuoj7BwhSrt2K1QFMlOoA1eR0QRRZqKx7Dz702/cU+70dgdYEj3ZIEWxFlBi0PthQ</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="AzureConnection">
+      <Value>Data Source=tcp:swatterbugtracker-server.database.windows.net,1433%3bInitial Catalog=Swatter_Dev%3bUser Id=Scott_woods44%40swatterbugtracker-server%3bPassword=Jx_837192f6b8!</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

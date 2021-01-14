@@ -1,7 +1,7 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.Models.CommonViewModels;
-using BugTracker.Models.Email;
+//using BugTracker.Models.Email;
 using BugTracker.Models.Home;
 using BugTracker.Models.PostModels;
 using BugTracker.Models.Projects;
@@ -23,7 +23,7 @@ namespace BugTracker.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IEmailSender _emailSender;
+        //private readonly IEmailSender _emailSender;
         private readonly IUserServices _userServices;
         private readonly IProjectServices _projectServices;
         private readonly ITicketServices _ticketServices;
@@ -33,7 +33,7 @@ namespace BugTracker.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            IEmailSender emailSender,
+            //IEmailSender emailSender,
             IUserServices userServices,
             IProjectServices projectServices,
             ITicketServices ticketServices,
@@ -43,7 +43,7 @@ namespace BugTracker.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _logger = logger;
-            _emailSender = emailSender;
+            //_emailSender = emailSender;
             _userServices = userServices;
             _projectServices = projectServices;
             _ticketServices = ticketServices;

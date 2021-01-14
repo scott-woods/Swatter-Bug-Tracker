@@ -1,6 +1,6 @@
 ﻿using BugTracker.Models;
 using BugTracker.Models.Account;
-using BugTracker.Models.Email;
+//using BugTracker.Models.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,19 +18,19 @@ namespace BugTracker.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IEmailSender _emailSender;
+        //private readonly IEmailSender _emailSender;
 
         public AccountController(ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
-            IEmailSender emailSender)
+            RoleManager<IdentityRole> roleManager)
+            //IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _logger = logger;
-            _emailSender = emailSender;
+            //_emailSender = emailSender;
         }
 
         //Register new Account
@@ -191,85 +191,85 @@ namespace BugTracker.Controllers
         }
 
         
-        //Password resetting
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            var model = new ForgotPasswordModel();
-            return View(model);
-        }
+        ////Password resetting
+        //[AllowAnonymous]
+        //public IActionResult ForgotPassword()
+        //{
+        //    var model = new ForgotPasswordModel();
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            //check if email exists
-            var user = await _userManager.FindByEmailAsync(model.Email);
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    //check if email exists
+        //    var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null)
-            {
-                return RedirectToAction("ResetEmailSentConfirmation");
-            }
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callback = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, Request.Scheme);
-            var emailMessage = new EmailMessage(new string[] { model.Email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
-            _emailSender.SendEmail(emailMessage);
-            return RedirectToAction("ResetEmailSentConfirmation");
-        }
+        //    if (user == null)
+        //    {
+        //        return RedirectToAction("ResetEmailSentConfirmation");
+        //    }
+        //    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //    var callback = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, Request.Scheme);
+        //    var emailMessage = new EmailMessage(new string[] { model.Email }, "Swatter Password Reset", $"Please click the following link to reset your password: {callback}");
+        //    _emailSender.SendEmail(emailMessage);
+        //    return RedirectToAction("ResetEmailSentConfirmation");
+        //}
 
-        [AllowAnonymous]
-        public IActionResult ResetEmailSentConfirmation()
-        {
-            return View();
-        }
+        //[AllowAnonymous]
+        //public IActionResult ResetEmailSentConfirmation()
+        //{
+        //    return View();
+        //}
 
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult ResetPassword(string token, string email)
-        {
-            var model = new ResetPasswordModel { Token = token, Email = email };
-            return View(model);
-        }
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public IActionResult ResetPassword(string token, string email)
+        //{
+        //    var model = new ResetPasswordModel { Token = token, Email = email };
+        //    return View(model);
+        //}
 
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
-        {
-            //Check if Password is valid (based on rules set by Identity Package in Startup)
-            var passwordValidator = new PasswordValidator<ApplicationUser>();
-            var validatorResult = await passwordValidator.ValidateAsync(_userManager, null, resetPasswordModel.Password);
-            if (!validatorResult.Succeeded)
-            {
-                ModelState.AddModelError("InvalidPassword", "The Password you entered was Invalid.");
-                return View(resetPasswordModel);
-            }
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        //{
+        //    //Check if Password is valid (based on rules set by Identity Package in Startup)
+        //    var passwordValidator = new PasswordValidator<ApplicationUser>();
+        //    var validatorResult = await passwordValidator.ValidateAsync(_userManager, null, resetPasswordModel.Password);
+        //    if (!validatorResult.Succeeded)
+        //    {
+        //        ModelState.AddModelError("InvalidPassword", "The Password you entered was Invalid.");
+        //        return View(resetPasswordModel);
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                return View(resetPasswordModel);
-            }
-            var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
-            if (user == null) RedirectToAction("ResetPasswordConfirmation");
-            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.Password);
-            if (!resetPassResult.Succeeded)
-            {
-                foreach (var error in resetPassResult.Errors)
-                {
-                    ModelState.TryAddModelError(error.Code, error.Description);
-                }
-                return View();
-            }
-            return RedirectToAction("ResetPasswordConfirmation");
-        }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(resetPasswordModel);
+        //    }
+        //    var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+        //    if (user == null) RedirectToAction("ResetPasswordConfirmation");
+        //    var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.Password);
+        //    if (!resetPassResult.Succeeded)
+        //    {
+        //        foreach (var error in resetPassResult.Errors)
+        //        {
+        //            ModelState.TryAddModelError(error.Code, error.Description);
+        //        }
+        //        return View();
+        //    }
+        //    return RedirectToAction("ResetPasswordConfirmation");
+        //}
 
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
-        }
+        //[AllowAnonymous]
+        //public IActionResult ResetPasswordConfirmation()
+        //{
+        //    return View();
+        //}
     }
 }

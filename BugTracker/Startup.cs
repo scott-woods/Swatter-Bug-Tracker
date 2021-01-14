@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using BugTracker.Data;
 using BugTracker.Models;
 using Microsoft.AspNetCore.Authorization;
-using BugTracker.Models.Email;
+//using BugTracker.Models.Email;
 using System.Security.Claims;
 using BugTracker.AuthorizationRequirements;
 using BugTracker.Services;
@@ -34,12 +34,12 @@ namespace BugTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Email Config
-            var emailConfig = Configuration
-                .GetSection("EmailConfiguration")
-                .Get<EmailConfiguration>();
-            services.AddSingleton(emailConfig);
-            services.AddScoped<IEmailSender, EmailSender>();
+            ////Email Config
+            //var emailConfig = Configuration
+            //    .GetSection("EmailConfiguration")
+            //    .Get<EmailConfiguration>();
+            //services.AddSingleton(emailConfig);
+            //services.AddScoped<IEmailSender, EmailSender>();
 
             //Add Data Model Services
             services.AddScoped<IUserServices, UserServices>();
