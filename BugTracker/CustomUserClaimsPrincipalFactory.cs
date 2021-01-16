@@ -1,4 +1,5 @@
 ﻿using BugTracker.Models;
+using BugTracker.Models.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;

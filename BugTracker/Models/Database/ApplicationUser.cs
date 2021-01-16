@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BugTracker.Models.Database;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BugTracker.Models
 
         public string LastName { get; set; }
 
-        //public IdentityRole Role { get; set; }
+        //public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
         public IList<ProjectUser> ProjectUsers { get; set; }
     }

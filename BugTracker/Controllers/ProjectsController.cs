@@ -1,6 +1,7 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.Models.CommonViewModels;
+using BugTracker.Models.Database;
 //using BugTracker.Models.Email;
 using BugTracker.Models.Home;
 using BugTracker.Models.PostModels;
@@ -52,7 +53,16 @@ namespace BugTracker.Controllers
         
         public IActionResult Index()
         {
-            var allProjects = _projectServices.GetAll();
+            var currUserId = _userManager.GetUserId(User);
+            var allProjects = new List<Project>();
+            if (User.IsInRole("Admin"))
+            {
+                allProjects = _projectServices.GetAll().ToList();
+            }
+            else
+            {
+                allProjects = _projectServices.GetAllByUserId(currUserId).ToList();
+            }
 
             var listingResult = allProjects
                 .Select(result => new ProjectListingModel
@@ -67,12 +77,12 @@ namespace BugTracker.Controllers
                 }
                     ).ToList();
 
-            var projectModel = new ProjectIndexModel
+            var projectIndexModel = new ProjectIndexModel
             {
                 Projects = listingResult
             };
 
-            return View(projectModel);
+            return View(projectIndexModel);
         }
 
         [HttpGet]
@@ -166,9 +176,16 @@ namespace BugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> EditProject(int projectId)
         {
             var project = _projectServices.GetById(projectId);
+            
+            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            {
+                return RedirectToAction("Index");
+            }
+            
             var listingResult = await _projectServices.FormatProjectAsync(project);
 
             //Add IDs of all Users in project to list
@@ -206,6 +223,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> EditProject(UserProjectModel model, string[] userIds)
         {
             if (!ModelState.IsValid)
@@ -213,8 +231,16 @@ namespace BugTracker.Controllers
                 return View(model);
             }
 
-            //Get Project from DB and change appropriate fields
+            //Get Project from DB by ID
             var project = _projectServices.GetById(model.ProjectModel.Id);
+
+            //Ensure that current User is either the creator of the Project or an Admin
+            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            {
+                return RedirectToAction("Index");
+            }
+
+            //Change appropriate Fields
             project.Title = model.ProjectModel.Title;
             project.Description = model.ProjectModel.Description;
             project.LastUpdatedBy = await _userManager.GetUserAsync(User);
@@ -263,15 +289,28 @@ namespace BugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Manager")]
         public IActionResult DeleteProject(int id)
         {
             var project = _projectServices.GetById(id);
+
+            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            {
+                return RedirectToAction("Index");
+            }
+
             return PartialView("_DeleteProjectPartial", project);
         }
 
         [HttpPost]
+        [Authorize(Policy = "Manager")]
         public IActionResult DeleteProject(Project project)
         {
+            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            {
+                return RedirectToAction("Index");
+            }
+
             _context.Projects.Remove(project);
             _context.SaveChanges();
             return PartialView("_DeleteProjectPartial", project);

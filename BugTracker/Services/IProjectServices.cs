@@ -10,6 +10,8 @@ namespace BugTracker.Services
     public interface IProjectServices
     {
         public IEnumerable<Project> GetAll();
+
+        public IEnumerable<Project> GetAllByUserId(string id);
         
         public void Add(Project project);
 

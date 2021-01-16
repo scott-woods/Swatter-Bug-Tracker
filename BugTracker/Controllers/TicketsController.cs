@@ -1,6 +1,7 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.Models.CommonViewModels;
+using BugTracker.Models.Database;
 //using BugTracker.Models.Email;
 using BugTracker.Models.Home;
 using BugTracker.Models.PostModels;
@@ -104,6 +105,10 @@ namespace BugTracker.Controllers
         {
             //Get all Users and format into Index Model
             var allUsers = _userServices.GetAll();
+            foreach (var user in allUsers)
+            {
+                _logger.LogInformation("User: " + user.UserName);
+            }
             var formattedUsers = await _userServices.FormatUsersAsync(allUsers);
             var userIndex = new UserIndexModel { Users = formattedUsers };
 

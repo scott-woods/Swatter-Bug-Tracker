@@ -1,10 +1,12 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity 
+@{
     ViewBag.Title = "Swatter - Projects";
     ViewBag.ModalController = "Projects";
     ViewBag.ModalAction = "DeleteProject";
     ViewBag.ModalType = "Project";
 }
 @model BugTracker.Models.Projects.ProjectIndexModel
+@inject UserManager<ApplicationUser> _userManager
 
 <div id="DeleteModal"></div>
 
@@ -46,20 +48,23 @@
                                                            asp-route-projectId="@project.Id">Details</a>
                                                     </span>
                                                 </li>
-                                                <li>
-                                                    <span>
-                                                        <a class="nav-link"
-                                                           asp-action="EditProject"
-                                                           asp-route-projectId="@project.Id">Edit Project</a>
-                                                    </span>
-                                                </li>
-                                                <li>
-                                                    <a class="nav-link text-danger"
-                                                       data-toggle="ajax-modal"
-                                                       data-target="#modal-delete"
-                                                       data-url="@Url.Action("DeleteProject", "Projects", new { id = project.Id })"
-                                                       style="cursor:pointer">Delete</a>
-                                                </li>
+                                                @if (project.Creator.Id == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                                                {
+                                                    <li>
+                                                        <span>
+                                                            <a class="nav-link"
+                                                               asp-action="EditProject"
+                                                               asp-route-projectId="@project.Id">Edit Project</a>
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        <a class="nav-link text-danger"
+                                                           data-toggle="ajax-modal"
+                                                           data-target="#modal-delete"
+                                                           data-url="@Url.Action("DeleteProject", "Projects", new { id = project.Id })"
+                                                           style="cursor:pointer">Delete</a>
+                                                    </li>
+                                                }
                                             </ul>
                                         </td>
                                     </tr>
@@ -71,9 +76,12 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col px-4 pb-4">
-            <a class="btn btn-primary" asp-action="NewProject">Create New Project</a>
+    @if (User.IsInRole("Manager") || (User.IsInRole("Admin")))
+    {
+        <div class="row">
+            <div class="col px-4 pb-4">
+                <a class="btn btn-primary" asp-action="NewProject">Create New Project</a>
+            </div>
         </div>
-    </div>
+    }
 </div>

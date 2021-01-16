@@ -1,4 +1,5 @@
 ﻿using BugTracker.Models;
+using BugTracker.Models.Database;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -53,7 +54,28 @@ namespace BugTracker.Data
                 .HasMany(u => u.ProjectUsers)
                 .WithOne(u => u.ApplicationUser)
                 .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasMany(u => u.UserRoles)
+            //    .WithOne(u => u.ApplicationUser)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
+            //modelBuilder.Entity<UserRole>()
+            //    .HasOne(e => e.Role)
+            //    .WithMany()
+            //    .HasForeignKey(e => e.RoleId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<UserRole>()
+            //    .HasKey(ur => new { ur.UserId, ur.RoleId });
+            //modelBuilder.Entity<UserRole>()
+            //    .HasOne(u => u.ApplicationUser)
+            //    .WithMany(r => r.UserRoles)
+            //    .HasForeignKey(ur => ur.UserId);
+            //modelBuilder.Entity<UserRole>()
+            //    .HasOne(u => u.Role)
+            //    .WithMany(r => r.UserRoles)
+            //    .HasForeignKey(ur => ur.RoleId);
 
             modelBuilder.Entity<ProjectUser>()
                 .HasKey(bc => new { bc.UserId, bc.ProjectId });

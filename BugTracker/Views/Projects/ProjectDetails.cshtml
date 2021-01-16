@@ -1,10 +1,12 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity 
+@{
     ViewBag.Title = "Swatter - Project Details";
     ViewBag.ModalController = "Tickets";
     ViewBag.ModalAction = "DeleteTicket";
     ViewBag.ModalType = "Ticket";
 }
 @model BugTracker.Models.Projects.ProjectListingModel
+@inject UserManager<ApplicationUser> _userManager
 
 <div id="DeleteModal"></div>
 
@@ -19,12 +21,15 @@
             <div class="card w-100">
                 <div class="card-header">
                     <h3>Details for @Model.Title</h3>
-                    <a class="nav-link p-0" asp-action="EditProject" asp-route-projectId="@Model.Id">Edit Project</a>
-                    <a class="nav-link text-danger p-0"
-                       data-toggle="ajax-modal"
-                       data-target="#modal-delete"
-                       data-url="@Url.Action("DeleteProject", "Projects", new { id = Model.Id })"
-                       style="cursor:pointer">Delete Project</a>
+                    @if ((_userManager.GetUserId(User) == Model.Creator.Id) || (User.IsInRole("Admin")))
+                    {
+                        <a class="nav-link p-0" asp-action="EditProject" asp-route-projectId="@Model.Id">Edit Project</a>
+                        <a class="nav-link text-danger p-0"
+                           data-toggle="ajax-modal"
+                           data-target="#modal-delete"
+                           data-url="@Url.Action("DeleteProject", "Projects", new { id = Model.Id })"
+                           style="cursor:pointer">Delete Project</a>
+                    }
                 </div>
                 <div class="card-body">
                     <div class="row">

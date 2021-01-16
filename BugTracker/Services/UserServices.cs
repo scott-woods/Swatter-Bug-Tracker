@@ -1,7 +1,10 @@
-﻿using BugTracker.Data;
+﻿using BugTracker.Controllers;
+using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Models.Database;
 using BugTracker.Models.Home;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +14,17 @@ namespace BugTracker.Services
 {
     public class UserServices : IUserServices
     {
+        private ILogger<HomeController> _logger;
         private AppDbContext _context;
         private UserManager<ApplicationUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public UserServices(AppDbContext context, UserManager<ApplicationUser> userManager)
+        public UserServices(ILogger<HomeController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _logger = logger;
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public void Add(ApplicationUser user)
@@ -29,6 +36,32 @@ namespace BugTracker.Services
         {
             return _context.Users;
         }
+
+        public async Task AddRole(ApplicationUser user, string roleName)
+        {
+            await _userManager.AddToRoleAsync(user, roleName);
+        }
+
+        public async Task RemoveRole(ApplicationUser user, string roleName)
+        {
+            await _userManager.RemoveFromRoleAsync(user, roleName);
+        }
+
+        //public async Task<IEnumerable<ApplicationUser>> GetAllByRole(string roleName)
+        //{
+        //    var role = await _roleManager.FindByNameAsync(roleName);
+        //    var id = await _roleManager.GetRoleIdAsync(role);
+        //    var allUsers = GetAll();
+        //    foreach (var user in allUsers)
+        //    {
+        //        foreach (var userRole in user.UserRoles)
+        //        {
+        //            _logger.LogInformation("User ID: " + userRole.UserId);
+        //            _logger.LogInformation("Role ID: " + userRole.RoleId);
+        //        }
+        //    }
+        //    return _context.Users.Where(u => u.UserRoles.Any(r => r.RoleId == id));
+        //}
 
         public ApplicationUser GetById(int id)
         {

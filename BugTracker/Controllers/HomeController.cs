@@ -18,6 +18,7 @@ using BugTracker.Models.PostModels;
 using BugTracker.Data;
 using BugTracker.Models.Projects;
 using BugTracker.Models.Home;
+using BugTracker.Models.Database;
 
 namespace BugTracker.Controllers
 {
@@ -94,17 +95,17 @@ namespace BugTracker.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (!string.IsNullOrEmpty(addRoles))
                 {
-                    if (model.RoleModel.SubmitterChecked) await _userManager.AddToRoleAsync(user, "Submitter");
-                    if (model.RoleModel.DeveloperChecked) await _userManager.AddToRoleAsync(user, "Developer");
-                    if (model.RoleModel.ManagerChecked) await _userManager.AddToRoleAsync(user, "Manager");
-                    if (model.RoleModel.AdminChecked) await _userManager.AddToRoleAsync(user, "Admin");
+                    if (model.RoleModel.SubmitterChecked) await _userServices.AddRole(user, "Submitter");
+                    if (model.RoleModel.DeveloperChecked) await _userServices.AddRole(user, "Developer");
+                    if (model.RoleModel.ManagerChecked) await _userServices.AddRole(user, "Manager");
+                    if (model.RoleModel.AdminChecked) await _userServices.AddRole(user, "Admin");
                 }
                 if (!string.IsNullOrEmpty(removeRoles))
                 {
-                    if (model.RoleModel.SubmitterChecked) await _userManager.RemoveFromRoleAsync(user, "Submitter");
-                    if (model.RoleModel.DeveloperChecked) await _userManager.RemoveFromRoleAsync(user, "Developer");
-                    if (model.RoleModel.ManagerChecked) await _userManager.RemoveFromRoleAsync(user, "Manager");
-                    if (model.RoleModel.AdminChecked) await _userManager.RemoveFromRoleAsync(user, "Admin");
+                    if (model.RoleModel.SubmitterChecked) await _userServices.RemoveRole(user, "Submitter");
+                    if (model.RoleModel.DeveloperChecked) await _userServices.RemoveRole(user, "Developer");
+                    if (model.RoleModel.ManagerChecked) await _userServices.RemoveRole(user, "Manager");
+                    if (model.RoleModel.AdminChecked) await _userServices.RemoveRole(user, "Admin");
                 }
                 //Get Index of matching User in UserModel
                 int index = model.UserModel.Users.IndexOf(model.UserModel.Users.Where(u => u.Id == id).FirstOrDefault());

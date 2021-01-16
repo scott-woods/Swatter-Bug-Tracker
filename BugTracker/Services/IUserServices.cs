@@ -13,7 +13,13 @@ namespace BugTracker.Services
 
         public void Add(ApplicationUser user);
 
+        public Task AddRole(ApplicationUser user, string roleName);
+
+        public Task RemoveRole(ApplicationUser user, string roleName);
+
         public ApplicationUser GetById(int id);
+
+        //public Task<IEnumerable<ApplicationUser>> GetAllByRole(string roleName);
 
         public Task<List<UserListingModel>> FormatUsersAsync(IEnumerable<ApplicationUser> userModels);
     }

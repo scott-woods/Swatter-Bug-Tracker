@@ -58,16 +58,13 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Main</div>
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            @*<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>*@
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Projects</div>
-                        @if (User.IsInRole("Developer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
-                        {
-                            <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="Index">
+                            <a class="nav-link" asp-controller="Projects" asp-action="Index">
                                 My Projects
                             </a>
-                        }
                         <a class="nav-link" asp-controller="Tickets" asp-action="Index">
                             My Tickets
                         </a>

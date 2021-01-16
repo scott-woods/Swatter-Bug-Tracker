@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using BugTracker.AuthorizationRequirements;
 using BugTracker.Services;
+using BugTracker.Models.Database;
 
 namespace BugTracker
 {
@@ -123,7 +124,7 @@ namespace BugTracker
         }
 
         //Creates and Adds roles to the Role Manager
-        private async Task CreateRoles(IServiceProvider serviceProvider)
+        private static async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -133,8 +134,10 @@ namespace BugTracker
                 bool roleExists = await RoleManager.RoleExistsAsync(roleName);
                 if (!roleExists)
                 {
-                    var role = new IdentityRole();
-                    role.Name = roleName;
+                    var role = new IdentityRole
+                    {
+                        Name = roleName
+                    };
                     await RoleManager.CreateAsync(role);
                 }
             }
