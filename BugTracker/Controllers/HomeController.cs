@@ -19,6 +19,7 @@ using BugTracker.Data;
 using BugTracker.Models.Projects;
 using BugTracker.Models.Home;
 using BugTracker.Models.Database;
+using BugTracker.Models.Tickets;
 
 namespace BugTracker.Controllers
 {
@@ -31,6 +32,7 @@ namespace BugTracker.Controllers
         //private readonly IEmailSender _emailSender;
         private readonly IUserServices _userServices;
         private readonly IProjectServices _projectServices;
+        private readonly ITicketServices _ticketServices;
         private readonly AppDbContext _context;
 
         public HomeController(ILogger<HomeController> logger,
@@ -40,6 +42,7 @@ namespace BugTracker.Controllers
             //IEmailSender emailSender,
             IUserServices userServices,
             IProjectServices projectServices,
+            ITicketServices ticketServices,
             AppDbContext context)
         {
             _signInManager = signInManager;
@@ -49,12 +52,50 @@ namespace BugTracker.Controllers
             //_emailSender = emailSender;
             _userServices = userServices;
             _projectServices = projectServices;
+            _ticketServices = ticketServices;
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var tickets = new List<Ticket>();
+            var projects = new List<Project>();
+            if (User.IsInRole("Admin"))
+            {
+                tickets = _ticketServices.GetAll().ToList();
+                projects = _projectServices.GetAll().ToList();
+            }
+            else
+            {
+                tickets = _ticketServices.GetAllByUser(_userManager.GetUserId(User)).ToList();
+                projects = _projectServices.GetAllByUser(_userManager.GetUserId(User)).ToList();
+            }
+
+            var ticketIndexModel = new TicketIndexModel
+            {
+                PriorityCount = _ticketServices.GetPriorityCount(tickets),
+                TypeCount = _ticketServices.GetTypeCount(tickets),
+                StatusCount = _ticketServices.GetStatusCount(tickets)
+            };
+            foreach (var ticket in tickets)
+            {
+                ticketIndexModel.Tickets.Add(_ticketServices.FormatTicket(ticket));
+            }
+
+            var projectIndexModel = new ProjectIndexModel();
+            foreach (var project in projects)
+            {
+                var formattedProject = await _projectServices.FormatProjectAsync(project);
+                projectIndexModel.Projects.Add(formattedProject);
+            }
+
+            var model = new TicketProjectModel
+            {
+                TicketIndexModel = ticketIndexModel,
+                ProjectIndexModel = projectIndexModel
+            };
+
+            return View(model);
         }
 
         [HttpGet]

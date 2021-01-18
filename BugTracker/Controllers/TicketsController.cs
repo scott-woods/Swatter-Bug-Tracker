@@ -53,7 +53,17 @@ namespace BugTracker.Controllers
 
         public IActionResult Index()
         {
-            var tickets = _ticketServices.GetAll().ToList();
+            var tickets = new List<Ticket>();
+            //If User is Admin, show all Tickets
+            if (User.IsInRole("Admin"))
+            {
+                tickets = _ticketServices.GetAll().ToList();
+            }
+            //Otherwise, show tickets only relative to the User.
+            else
+            {
+                tickets = _ticketServices.GetAllByUser(_userManager.GetUserId(User)).ToList();
+            }
             var model = new TicketIndexModel();
             foreach (var ticket in tickets)
             {
@@ -104,12 +114,11 @@ namespace BugTracker.Controllers
         public async Task<IActionResult> NewTicket(int projectId)
         {
             //Get all Users and format into Index Model
-            var allUsers = _userServices.GetAll();
-            foreach (var user in allUsers)
-            {
-                _logger.LogInformation("User: " + user.UserName);
-            }
-            var formattedUsers = await _userServices.FormatUsersAsync(allUsers);
+            var project = _projectServices.GetById(projectId);
+            var projUsers = _projectServices.GetAllUsers(project);
+            var projDevelopers = await _userServices.GetAllByRole("Developer", projUsers);
+
+            var formattedUsers = await _userServices.FormatUsersAsync(projDevelopers);
             var userIndex = new UserIndexModel { Users = formattedUsers };
 
             var ticketModel = new TicketModel { ProjectId = projectId };

@@ -51,7 +51,7 @@ namespace BugTracker.Controllers
             _context = context;
         }
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var currUserId = _userManager.GetUserId(User);
             var allProjects = new List<Project>();
@@ -61,26 +61,16 @@ namespace BugTracker.Controllers
             }
             else
             {
-                allProjects = _projectServices.GetAllByUserId(currUserId).ToList();
+                allProjects = _projectServices.GetAllByUser(currUserId).ToList();
             }
 
-            var listingResult = allProjects
-                .Select(result => new ProjectListingModel
-                {
-                    Id = result.Id,
-                    Title = result.Title,
-                    Description = result.Description,
-                    CreateDate = result.CreateDate,
-                    Creator = result.Creator,
-                    LastUpdateDate = result.LastUpdateDate,
-                    LastUpdatedBy = result.LastUpdatedBy
-                }
-                    ).ToList();
+            var projectIndexModel = new ProjectIndexModel();
 
-            var projectIndexModel = new ProjectIndexModel
+            foreach (var project in allProjects)
             {
-                Projects = listingResult
-            };
+                var formattedProject = await _projectServices.FormatProjectAsync(project);
+                projectIndexModel.Projects.Add(formattedProject);
+            }
 
             return View(projectIndexModel);
         }
@@ -181,7 +171,7 @@ namespace BugTracker.Controllers
         {
             var project = _projectServices.GetById(projectId);
             
-            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            if ((_userManager.GetUserId(User) != project.Creator.Id) && !(User.IsInRole("Admin")))
             {
                 return RedirectToAction("Index");
             }
@@ -235,7 +225,7 @@ namespace BugTracker.Controllers
             var project = _projectServices.GetById(model.ProjectModel.Id);
 
             //Ensure that current User is either the creator of the Project or an Admin
-            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            if ((_userManager.GetUserId(User) != project.Creator.Id) && !(User.IsInRole("Admin")))
             {
                 return RedirectToAction("Index");
             }
@@ -294,7 +284,7 @@ namespace BugTracker.Controllers
         {
             var project = _projectServices.GetById(id);
 
-            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            if ((_userManager.GetUserId(User) != project.Creator.Id) && !(User.IsInRole("Admin")))
             {
                 return RedirectToAction("Index");
             }
@@ -306,7 +296,7 @@ namespace BugTracker.Controllers
         [Authorize(Policy = "Manager")]
         public IActionResult DeleteProject(Project project)
         {
-            if ((_userManager.GetUserId(User) != project.Creator.Id) || !(User.IsInRole("Admin")))
+            if ((_userManager.GetUserId(User) != project.Creator.Id) && !(User.IsInRole("Admin")))
             {
                 return RedirectToAction("Index");
             }

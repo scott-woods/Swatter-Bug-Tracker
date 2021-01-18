@@ -11,6 +11,8 @@ namespace BugTracker.Services
     {
         public IEnumerable<ApplicationUser> GetAll();
 
+        public Task<IEnumerable<ApplicationUser>> GetAllByRole(string roleName, IEnumerable<ApplicationUser> users = default);
+
         public void Add(ApplicationUser user);
 
         public Task AddRole(ApplicationUser user, string roleName);

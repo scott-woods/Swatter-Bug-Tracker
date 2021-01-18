@@ -37,6 +37,16 @@ namespace BugTracker.Services
             return _context.Users;
         }
 
+        public async Task<IEnumerable<ApplicationUser>> GetAllByRole(string roleName, IEnumerable<ApplicationUser> users = default)
+        {
+            var allDevelopers = await _userManager.GetUsersInRoleAsync(roleName);
+            if (users == default(IEnumerable<ApplicationUser>))
+            {
+                return allDevelopers;
+            }
+            return users.Where(u => allDevelopers.Any(d => d.Id == u.Id));
+        }
+
         public async Task AddRole(ApplicationUser user, string roleName)
         {
             await _userManager.AddToRoleAsync(user, roleName);

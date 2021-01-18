@@ -7,6 +7,6 @@ namespace BugTracker.Models.Projects
 {
     public class ProjectIndexModel
     {
-        public List<ProjectListingModel> Projects { get; set; }
+        public List<ProjectListingModel> Projects { get; set; } = new List<ProjectListingModel>();
     }
 }

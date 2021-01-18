@@ -11,11 +11,13 @@ namespace BugTracker.Services
     {
         public IEnumerable<Project> GetAll();
 
-        public IEnumerable<Project> GetAllByUserId(string id);
+        public IEnumerable<Project> GetAllByUser(string userId);
         
         public void Add(Project project);
 
         public Project GetById(int id);
+
+        public IEnumerable<ApplicationUser> GetAllUsers(Project project);
 
         public Task<ProjectListingModel> FormatProjectAsync(Project project);
     }

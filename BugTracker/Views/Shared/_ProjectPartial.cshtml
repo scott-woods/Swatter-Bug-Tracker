@@ -1,4 +1,6 @@
-﻿@model BugTracker.Models.CommonViewModels.UserProjectModel
+﻿@using Microsoft.AspNetCore.Identity
+@model BugTracker.Models.CommonViewModels.UserProjectModel
+@inject UserManager<ApplicationUser> _userManager
     <div class="card m-4">
         <div class="card-header">
             <h2>@ViewData["cardHeader"]</h2>
@@ -43,11 +45,15 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @if (Model.ProjectModel.UserIds.Contains(user.Id))
+                                                        @if (_userManager.GetUserId(User) == user.Id)
+                                                        {
+                                                            <input type="checkbox" value="@user.Id" name="userIds" checked="checked" disabled="disabled" />
+                                                        }
+                                                        else if (Model.ProjectModel.UserIds.Contains(user.Id))
                                                         {
                                                             <input type="checkbox" value="@user.Id" name="userIds" checked="checked" />
                                                         }
-                                                        @if (!Model.ProjectModel.UserIds.Contains(user.Id))
+                                                        else
                                                         {
                                                             <input type="checkbox" value="@user.Id" name="userIds" />
                                                         }

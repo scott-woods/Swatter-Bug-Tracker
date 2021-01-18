@@ -41,13 +41,18 @@ namespace BugTracker.Services
                 .Include(p => p.Creator);
         }
 
-        public IEnumerable<Project> GetAllByUserId(string id)
+        public IEnumerable<Project> GetAllByUser(string userId)
         {
             var allProjects = _context.Projects
-                .Where(p => p.ProjectUsers.Any(u => u.UserId == id))
+                .Where(p => (p.ProjectUsers.Any(u => u.UserId == userId)) || (p.Creator.Id == userId))
                 .Include(p => p.LastUpdatedBy)
                 .Include(p => p.Creator);
             return allProjects.ToList();
+        }
+
+        public IEnumerable<ApplicationUser> GetAllUsers(Project project)
+        {
+            return _context.Users.Where(u => u.ProjectUsers.Any(u => u.ProjectId == project.Id));
         }
 
         public Project GetById(int id)

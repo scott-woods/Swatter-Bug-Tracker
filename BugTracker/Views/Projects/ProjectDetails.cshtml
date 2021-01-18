@@ -139,19 +139,22 @@
                                                         <a class="nav-link" asp-controller="Tickets" asp-action="TicketDetails" asp-route-ticketId="@ticket.Id">Details</a>
                                                     </span>
                                                 </li>
-                                                <li>
-                                                    <span>
-                                                        <a class="nav-link" asp-controller="Tickets" asp-action="EditTicket" asp-route-ticketId="@ticket.Id">Edit Ticket</a>
-                                                    </span>
-                                                </li>
-                                                <li>
-                                                    <a id="deleteTicketModal"
-                                                       data-toggle="ajax-modal"
-                                                       data-target="#modal-delete"
-                                                       data-url="@Url.Action("DeleteTicket", "Tickets", new { id = ticket.Id })"
-                                                       class="nav-link text-danger"
-                                                       style="cursor:pointer">Delete</a>
-                                                </li>
+                                                @if ((_userManager.GetUserId(User) == ticket.Creator.Id) || (User.IsInRole("Admin")))
+                                                {
+                                                    <li>
+                                                        <span>
+                                                            <a class="nav-link" asp-controller="Tickets" asp-action="EditTicket" asp-route-ticketId="@ticket.Id">Edit Ticket</a>
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        <a id="deleteTicketModal"
+                                                           data-toggle="ajax-modal"
+                                                           data-target="#modal-delete"
+                                                           data-url="@Url.Action("DeleteTicket", "Tickets", new { id = ticket.Id })"
+                                                           class="nav-link text-danger"
+                                                           style="cursor:pointer">Delete</a>
+                                                    </li>
+                                                }
                                             </ul>
                                         </td>
                                     </tr>
