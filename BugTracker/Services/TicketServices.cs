@@ -52,6 +52,9 @@ namespace BugTracker.Services
             priorityCount.Add(Priority.Low, lowPriTickets);
             priorityCount.Add(Priority.Medium, medPriTickets);
             priorityCount.Add(Priority.High, highPriTickets);
+            //if (lowPriTickets > 0) priorityCount.Add(Priority.Low, lowPriTickets);
+            //if (medPriTickets > 0) priorityCount.Add(Priority.Medium, medPriTickets);
+            //if (highPriTickets > 0) priorityCount.Add(Priority.High, highPriTickets);
 
             return priorityCount;
         }
