@@ -12,6 +12,7 @@
                 <form action="@Url.Action("DeleteProject", "Projects")">
                     Are you sure you want to delete this Project?
                     <input type="hidden" asp-for="@Model.Id" />
+                    <input type="hidden" asp-for="@Model.Creator.Id" />
                     <input type="hidden" name="redirectUrl" value="@Url.Action("Index", "Projects")" />
                 </form>
             </div>

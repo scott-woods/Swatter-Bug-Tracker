@@ -12,6 +12,7 @@
                     <form action="@Url.Action("DeleteTicket", "Tickets")">
                         Are you sure you want to delete this Ticket?
                         <input type="hidden" asp-for="@Model.Id" />
+                        <input type ="hidden" asp-for="@Model.Project.Id" />
                         <input type="hidden" name="redirectUrl" value="@Url.Action("ProjectDetails", "Projects", new { projectId = Model.Project.Id })" />
                     </form>
                 </div>
